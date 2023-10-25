@@ -27,9 +27,28 @@ class TestController extends GetxController {
 
   late Isar isar;
 
-  findOne () async{
-    var result = await isar.users.filter().idEqualTo(3).findFirst();
-    print(result!.id);
+  findOne() async{
+    User? result = await isar.users.filter().idEqualTo(3).findFirst();
+    print(result!.name);
   }
+
+  insert () async{
+      final user = User()
+          ..name = 'gunsun'
+          ..age = 10;
+
+      await isar.writeTxn(() async{
+        await isar.users.put(user);
+      });
+  }
+
+  delete () {
+    isar.writeTxn(() async {
+      final success = await isar.users.delete(3);
+      print('users deleted: $success');
+    });
+  }
+
+
 
 }

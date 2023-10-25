@@ -58,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //   isar.name;
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,10 +66,23 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(onPressed: (){
-c.findOne();
-          }, child: Text('find one'))
+          ElevatedButton(
+              onPressed: () {
+                c.findOne();
+              },
+              child: Text('find one')),
+          ElevatedButton(
+              onPressed: () {
+                c.delete();
+              },
+              child: Text('delete')),
+          ElevatedButton(
+              onPressed: () {
+                c.insert();
+              },
+              child: Text('create'))
         ],
       ),
     );
