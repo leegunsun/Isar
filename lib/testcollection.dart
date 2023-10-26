@@ -14,7 +14,7 @@ class TestCollection {
   String? marchent;
 
   @ignore
-  @Name('passwordIg')
+  @Name('passwordIg') // 로컬 DB에 생성 되지 않고 무시됨
   String? password;
 
   @Name('listTest')
