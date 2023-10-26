@@ -68,11 +68,36 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-              onPressed: () {
-                c.findOne();
-              },
-              child: Text('find one')),
+          Text('isar find sample'),
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    c.findOne();
+                  },
+                  child: Text('find one')),
+              ElevatedButton(
+                  onPressed: () {
+                    c.findOne();
+                  },
+                  child: Text('TCfind one')),
+            ],
+          ),
+          Text('isar create sample'),
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    c.insert();
+                  },
+                  child: Text('insert one')),
+              ElevatedButton(
+                  onPressed: () {
+                    c.insertTC();
+                  },
+                  child: Text('insertTC one')),
+            ],
+          ),
           ElevatedButton(
               onPressed: () {
                 c.delete();
@@ -82,7 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 c.insert();
               },
-              child: Text('create'))
+              child: Text('create')),
+          ElevatedButton(
+              onPressed: () {
+                c.updateisar();
+              },
+              child: Text('update'))
         ],
       ),
     );
