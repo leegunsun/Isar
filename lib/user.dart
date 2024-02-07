@@ -9,4 +9,21 @@ class User {
   String? name;
 
   int? age;
+
+  List<String>? listTest;
+
+  @Name("user")
+  UserModel? userModel;
+}
+
+@embedded
+class UserModel {
+  String? name;
+  String? pass;
+  String? re;
+  String? email;
+  String? defaultwallet;
+
+  UserModel({this.name,this.pass,this.re,this.email,this.defaultwallet});
+
 }

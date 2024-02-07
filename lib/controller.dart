@@ -22,7 +22,7 @@ class TestController extends GetxController {
         await Isar.open([UserSchema, TestCollectionSchema, IgTestSchema],
             // directory: '/data/user/1/com.example.swf/app_flutter', // ERROR CODE
             directory: '${dir.path}',
-            name: 'test1',
+            name: 'test2',
             inspector: true);
 
     print('${dir.path}');
@@ -36,9 +36,30 @@ class TestController extends GetxController {
 
   late Isar isar;
 
+  upDate() async {
+    User? result = await isar.users.filter().nameEqualTo("test1").findFirst();
+    // User result = User()..listTest = ["1","2","3"]..name = 'test1'..age = 20;
+    result?.name = "kk";
+    await isar.writeTxn(() async {
+      await isar.users.put(result!); // 삽입 & 업데이트
+    });
+
+  }
+
+  userModleUpDate() async {
+    UserModel modelresult = UserModel(name: "userTest", pass: "1111", defaultwallet: "lsdkjgslkdgjsldkgjlsdk",re:"FJDILG", email: "leegunsun01@gmail.com");
+    User? result = User()..userModel = modelresult;
+    // User result = User()..listTest = ["1","2","3"]..name = 'test1'..age = 20;
+
+    await isar.writeTxn(() async {
+      await isar.users.put(result); // 삽입 & 업데이트
+    });
+
+  }
+
   findOne() async {
-    User? result = await isar.users.filter().idEqualTo(3).findFirst();
-    print(result!.name);
+    User? result = await isar.users.filter().userModel((q) => q.nameEqualTo("userTest")).findFirst();
+    print(result!.userModel?.email);
   }
 
   findTC() async {

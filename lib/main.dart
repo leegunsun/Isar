@@ -56,16 +56,26 @@ class _MyHomePageState extends State<MyHomePage> {
           Text('isar find sample'),
           Row(
             children: [
+              // ElevatedButton(
+              //     onPressed: () {
+              //       c.upDate();
+              //     },
+              //     child: Text('upDate List')),
+              ElevatedButton(
+                  onPressed: () {
+                    c.userModleUpDate();
+                  },
+                  child: Text('UserModelupDate List')),
               ElevatedButton(
                   onPressed: () {
                     c.findOne();
                   },
                   child: Text('find one')),
-              ElevatedButton(
-                  onPressed: () {
-                    c.findOne();
-                  },
-                  child: Text('TCfind one')),
+              // ElevatedButton(
+              //     onPressed: () {
+              //       c.findOne();
+              //     },
+              //     child: Text('TCfind one')),
             ],
           ),
           Text('isar create sample'),
