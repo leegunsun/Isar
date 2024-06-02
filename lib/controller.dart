@@ -1,4 +1,5 @@
 import 'package:decimal/decimal.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
 import 'package:isar/isar.dart';
@@ -7,6 +8,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:swf/igtest.dart';
 import 'package:swf/testcollection.dart';
 import 'package:swf/user.dart';
+
+// LOG (String str) {
+//   kDe
+// }
 
 class TestController extends GetxController {
   @override
@@ -27,9 +32,9 @@ class TestController extends GetxController {
 
     print('${dir.path}');
 
-    final openisar = await Isar.open(
-        [UserSchema, TestCollectionSchema, IgTestSchema],
-        directory: dir.path, name: 'default', inspector: true);
+    // final openisar = await Isar.open(
+    //     [UserSchema, TestCollectionSchema, IgTestSchema],
+    //     directory: dir.path, name: 'default', inspector: true);
 
     isar = namedopenisar;
   }

@@ -1,13 +1,16 @@
-import 'package:decimal/decimal.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:swf/controller.dart';
-import 'package:swf/user.dart';
+
 import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:swf/controller.dart';
+import 'package:swf/home/bottomnav/bottomnav.dart';
+import 'package:swf/home/f_home/home.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: bindings);
   Get.put(TestController());
   runApp(const MyApp());
 }
@@ -37,157 +40,258 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  var list = [].obs;
-  final c = Get.find<TestController>();
-  final controller = TextEditingController();
+enum MerchantEditText {
+  shortName,
+  password1,
+  password2,
+  feeRate,
+  address1,
+  address2,
+  mobile,
+  url,
+  // city,
+  country,
+  postCode,
+  referralCode,
+  file,
+  max,
+}
+
+class _MyHomePageState extends State<MyHomePage>  {
+
+  // var list = [].obs;
+  // final c = Get.find<TestController>();
+  // final controller = TextEditingController();
+  // final editTextController = List.generate(
+  //     MerchantEditText.max.index, (index) => TextEditingController());
+  final List<GlobalKey<NavigatorState>> navigatorKeys = [];
+
+  int _selectedIndex = 0;
+  int _currentIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  List<Widget> page = [
+    // HomeFragment(),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+            builder: (context) => HomeView(),
+          );
+        })
+    // Text("1"),
+    // Text("2"),
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+    return  Scaffold(
+      body: SafeArea(
+        child: IndexedStack(
+          index: _currentIndex,
+          children: page,
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(controller: controller,),
-          Text('isar find sample'),
-          Row(
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    c.findOne();
-                  },
-                  child: Text('find one')),
-              ElevatedButton(
-                  onPressed: () {
-                    c.findOne();
-                  },
-                  child: Text('TCfind one')),
-            ],
-          ),
-          Text('isar create sample'),
-          Row(
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    c.insert();
-                  },
-                  child: Text('insert one')),
-              ElevatedButton(
-                  onPressed: () {
-                    c.insertTC();
-                  },
-                  child: Text('insertTC one')),
-            ],
-          ),
-          ElevatedButton(
-              onPressed: () {
-                c.delete();
-              },
-              child: Text('delete')),
-          ElevatedButton(
-              onPressed: () {
-                c.insert();
-              },
-              child: Text('create')),
-          ElevatedButton(
-              onPressed: () {
-                c.updateisar();
-              },
-              child: Text('update'))
-          ,
-          testContainer()
-        ],
+      bottomNavigationBar: BottomNav(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
       ),
     );
   }
 
-  Widget testContainer () {
+  Widget testContainer() {
     double fontSize = 20.0;
-    return
-        Container(
+    return Container(
         color: Colors.redAccent,
         height: 100,
-        width: 270,
+        width: 280,
         child: Center(
-          child: CustomTextOverflowWidget(
-            text: '8,888,888,888.888888888888888888',
-            style: TextStyle(fontSize: 20, color: Colors.black),
+          child: WalletBalanceWidget(
+             balance: 8888888888.888888888888888888,
+            // style: TextStyle(fontSize: 20, color: Colors.black),
           ),
-        )
-    );
+        ));
   }
 }
 
+class WalletBalanceWidget extends StatelessWidget {
+  final double balance;
+
+  WalletBalanceWidget({Key? key, required this.balance}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 정수와 소수 부분을 분리
+        List<String> parts = balance.toString().split('.');
+        String integerPart = parts[0];
+        String decimalPart = parts.length > 1 ? parts[1] : '';
+
+        // 정수 부분의 포맷팅
+        String formattedInteger = NumberFormat('#,###').format(int.parse(integerPart));
+
+        // 폰트 크기 및 소수점 자리수를 부모 위젯의 크기에 맞춰 계산
+        double fontSize = calculateFontSize(constraints, integerPart.length);
+        double decimalPlacesToShow = calculateDecimalPlacesToShow(constraints, integerPart.length).floor().toDouble();
+        String parse1 = fontSize.toString().split('.')[1];
+
+        // 소수 부분 자르기 및 포맷팅
+        String formattedDecimal = decimalPart.padRight(int.parse(parse1), '0').substring(0, int.parse(parse1));
+
+        return RichText(
+          maxLines: 1,
+          text: TextSpan(
+            style: TextStyle(color: Colors.black, fontSize: fontSize),
+            children: [
+              TextSpan(text: formattedInteger),
+              TextSpan(
+                text: '.$formattedDecimal',
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  double calculateFontSize(BoxConstraints constraints, int integerLength) {
+    double baseFontSize = constraints.maxWidth / 15; // 기본 폰트 크기를 최대 너비에 비례하게 설정
+    // 정수 부분의 길이에 따라 폰트 크기 조절
+    if (integerLength > 13) {
+      return baseFontSize * 0.8; // 정수 부분이 길면 폰트 크기 감소
+    } else if (integerLength < 7) {
+      return baseFontSize * 1.2; // 정수 부분이 짧으면 폰트 크기 증가
+    }
+    return baseFontSize;
+  }
+
+  double calculateDecimalPlacesToShow(BoxConstraints constraints, int integerLength) {
+    // 부모 위젯의 최대 너비를 기준으로 소수점 자리수 결정
+    double maxDecimalPlaces = 18.0; // 최대 소수점 자리수
+    double minDecimalPlaces = 6.0;  // 최소 소수점 자리수
+
+    // 부모 위젯의 너비에 따라 소수점 자리수 결정
+    double widthFactor = constraints.maxWidth / 500; // 너비에 따른 인자 계산
+    double decimalPlaces = (maxDecimalPlaces - minDecimalPlaces) * widthFactor + minDecimalPlaces;
+
+    // 소수점 자리수가 최대 및 최소 범위 내에 있는지 확인
+    decimalPlaces = decimalPlaces.clamp(minDecimalPlaces, maxDecimalPlaces);
+
+    // 정수 부분이 길 경우, 소수점 자리수를 최소 6자리로 유지
+    if (integerLength > 13) {
+      decimalPlaces = math.max(minDecimalPlaces, decimalPlaces);
+    }
+
+    return decimalPlaces;
+  }
+
+}
 
 class CustomTextOverflowWidget extends StatelessWidget {
   final String text;
   final TextStyle style;
   final double maxWidth;
-  final int minFractionDigits = 6; // 최소 소수점 자릿수
-  final int maxFractionDigits = 18; // 최대 소수점 자릿수
 
   const CustomTextOverflowWidget({
     Key? key,
     required this.text,
     required this.style,
-    this.maxWidth = 100.0,
+    this.maxWidth = 100.0, // 여기서 최대 너비를 설정합니다.
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<String> parts = [];
-    String integerPart = '';
-    String fractionPart = '';
-    // final parts = text.split('.');
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final TextPainter textPainter = TextPainter(
+          text: TextSpan(text: text, style: style),
+          maxLines: 1,
+        )..layout(maxWidth: maxWidth);
 
-    if(text.contains('.')) {
-      parts = text.split('.');
-      integerPart = '${parts[0]}.';
-      fractionPart = parts[1];
-    } else {
-      integerPart = text;
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(integerPart, style: style),
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              // 최대 가능한 길이부터 최소 길이까지 텍스트를 줄여가며 맞춰보기
-              for (int i = maxFractionDigits; i >= minFractionDigits; i--) {
-                var testText = fractionPart.substring(0, math.min(i, fractionPart.length));
-                final textPainter = TextPainter(
-                  text: TextSpan(text: testText, style: style),
-                  maxLines: 1,
-                  textDirection: TextDirection.ltr,
-                )..layout(maxWidth: maxWidth);
-
-                if (!textPainter.didExceedMaxLines) {
-                  // 맞는 길이를 찾으면 해당 길이로 텍스트 설정
-                  fractionPart = testText;
-                  break;
-                }
-              }
-
-              return FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  fractionPart.length > minFractionDigits ? '${fractionPart}...' : fractionPart,
-                  style: style,
-                  maxLines: 1,
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+        if (textPainter.didExceedMaxLines) {
+          // 텍스트가 너비를 초과하는 경우, 오버플로 처리
+          return Text(
+            text,
+            style: style,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          );
+        } else {
+          // 텍스트가 너비에 맞는 경우, 일반적으로 표시
+          return Text(text, style: style);
+        }
+      },
     );
   }
 }
 
+// Material(child: customS());
+//   Scaffold(
+//   body: Column(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       TextFormField(
+//         controller: controller,
+//       ),
+//       Text('isar find sample'),
+//       Row(
+//         children: [
+//           ElevatedButton(
+//               onPressed: () {
+//                 c.findOne();
+//               },
+//               child: Text('find one')),
+//           ElevatedButton(
+//               onPressed: () {
+//                 c.findOne();
+//               },
+//               child: Text('TCfind one')),
+//         ],
+//       ),
+//       Text('isar create sample'),
+//       Row(
+//         children: [
+//           ElevatedButton(
+//               onPressed: () {
+//                 c.insert();
+//               },
+//               child: Text('insert one')),
+//           ElevatedButton(
+//               onPressed: () {
+//                 c.insertTC();
+//               },
+//               child: Text('insertTC one')),
+//         ],
+//       ),
+//       ElevatedButton(
+//           onPressed: () {
+//             c.delete();
+//           },
+//           child: Text('delete')),
+//       ElevatedButton(
+//           onPressed: () {
+//             c.insert();
+//           },
+//           child: Text('create')),
+//       ElevatedButton(
+//           onPressed: () {
+//             c.updateisar();
+//           },
+//           child: Text('update')),
+//       // testContainer()
+//     ],
+//   ),
+// );
