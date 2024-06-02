@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:swf/home/f_home/f_w_home/f_w_home_pageview.dart';
+import 'package:swf/home/f_home/home_controller.dart';
+import 'package:swf/home/f_home/homebinding.dart';
 import 'package:swf/home/f_home/v_home/f_detail_item.dart';
 import 'package:swf/home/home_style/home_font_style.dart';
 
@@ -41,7 +44,8 @@ class HomeView extends StatelessWidget {
                       getItem: ['test'],
                       onTap: () {
                         print(context);
-                        Navigator.push(context,  MaterialPageRoute(builder: (context) => DetailItem()));
+
+                        Get.to(() =>  DetailItem(), binding: HomeBinding());
                       },);
                   },
                   separatorBuilder: (BuildContext context, int index) {
