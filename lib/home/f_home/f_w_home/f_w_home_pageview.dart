@@ -35,17 +35,17 @@ class _HomePageIMGState extends State<HomePageIMG> {
         itemBuilder: (BuildContext context, int index) {
           return CachedNetworkImage(
             imageUrl: images[index],
-            placeholder: (context, url) => Shimmer.fromColors(
-              baseColor: Colors.grey,
-              highlightColor: Colors.white,
-              child: Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[50],
-                      borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
-            ),
+            // placeholder: (context, url) => Shimmer.fromColors(
+            //   baseColor: Colors.grey,
+            //   highlightColor: Colors.white,
+            //   child: Expanded(
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //           color: Colors.grey[50],
+            //           borderRadius: BorderRadius.circular(12)),
+            //     ),
+            //   ),
+            // ),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             width: 150,
             fit: BoxFit.cover,
