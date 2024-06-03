@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:swf/home/f_home/v_home/mo_detail_item.dart';
 
@@ -29,7 +30,7 @@ class _DetailItemState extends State<DetailItem> with SingleTickerProviderStateM
   late AnimationController _controller;
   late CurvedAnimation _curvedAnimation;
   late Animation<double> _animation;
-  var animatedValue = 0.0.obs;
+  RxDouble animatedValue = 0.0.obs;
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _DetailItemState extends State<DetailItem> with SingleTickerProviderStateM
       parent: _controller
     );
 
-    _animation = Tween<double>(begin: animatedValue.value, end: getHeadMinSize).animate(_curvedAnimation)
+    _animation = Tween<double>(begin: getHeadMinSize, end: animatedValue.value ).animate(_curvedAnimation)
       ..addListener(() {
         animatedValue.value = _animation.value;
       });
@@ -58,8 +59,12 @@ class _DetailItemState extends State<DetailItem> with SingleTickerProviderStateM
   void animateValue() {
     if (!(isImg.value)) {
       _controller.forward();
+      print("animatedValue.value --> ${animatedValue.value}");
+
     } else {
       _controller.reverse();
+      print("animatedValue.value --> ${animatedValue.value}");
+
     }
   }
 
@@ -89,15 +94,12 @@ class _DetailItemState extends State<DetailItem> with SingleTickerProviderStateM
                   builder: (context, constraints) {
                     return Stack(
                       children: [
-                        Offstage(
-                          offstage: !isImg.value,
-                          child: PageView.builder(
-                                itemCount: 3, // item.mainImgUrl.lenght,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(color: Colors.accents[index],child: Text("kkkk"));
-                                },
-                              ),
-                        ),
+                        PageView.builder(
+                              itemCount: 3, // item.mainImgUrl.lenght,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(color: Colors.accents[index],child: Text("kkkk"));
+                              },
+                            ),
                         Positioned(
                           right: 0,
                           bottom: 0,
@@ -113,7 +115,7 @@ class _DetailItemState extends State<DetailItem> with SingleTickerProviderStateM
                                 height: iconSize,
                                 width: iconSize,
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     borderRadius: BorderRadius.circular(30)
                                 ),
                                 child: isImg.value ? const Icon(Icons.arrow_upward) : const Icon(Icons.arrow_downward) ,

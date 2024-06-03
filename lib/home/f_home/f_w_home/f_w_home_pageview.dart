@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomePageIMG extends StatefulWidget {
   HomePageIMG({super.key});
@@ -25,7 +26,7 @@ class _HomePageIMGState extends State<HomePageIMG> {
   @override
   Widget build(BuildContext context) {
     for (var imageUrl in images) {
-      _precacheImage(context,imageUrl);
+      _precacheImage(context, imageUrl);
     }
     return SizedBox(
       height: _boxSize,
@@ -34,8 +35,18 @@ class _HomePageIMGState extends State<HomePageIMG> {
         itemBuilder: (BuildContext context, int index) {
           return CachedNetworkImage(
             imageUrl: images[index],
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            placeholder: (context, url) => Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Colors.white,
+              child: Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
             width: 150,
             fit: BoxFit.cover,
           );

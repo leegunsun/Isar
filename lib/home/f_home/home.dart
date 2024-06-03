@@ -36,16 +36,15 @@ class HomeView extends StatelessWidget {
               child: HomePageIMG(),
             ),
             SliverPadding(
-              padding: EdgeInsets.only(left: sliverListPadding,right: sliverListPadding,top: sliverListPadding, bottom: 0),
+              padding: EdgeInsets.only(left: sliverListPadding, right: sliverListPadding,top: sliverListPadding, bottom: 0),
               sliver: SliverList.separated(
                  itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
                     return ItemList(
                       getItem: ['test'],
                       onTap: () {
-                        print(context);
-
-                        Get.to(() =>  DetailItem(), binding: HomeBinding());
+                        Get.to(() =>  DetailItem(),
+                            binding: HomeBinding());
                       },);
                   },
                   separatorBuilder: (BuildContext context, int index) {
