@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/state_manager.dart';
 import 'package:swf/home/f_home/v_home/mo_detail_item.dart';
 import 'package:swf/home/home_style/home_view_style.dart';
 
@@ -26,6 +27,7 @@ class _DetailItemState extends State<DetailItem>
 
   final double iconSize = 50;
   final double iconPaddingSize = 10;
+  RxDouble currentPagePix = 0.0.obs;
 
   double get getHeadMinSize => iconSize + (iconPaddingSize * 2);
 
@@ -33,11 +35,14 @@ class _DetailItemState extends State<DetailItem>
   late AnimationController _controller;
   late CurvedAnimation _curvedAnimation;
   late Animation<double> _animation;
+  final ScrollController _scrollController = ScrollController();
   RxDouble animatedValue = 0.0.obs;
+  RxBool isShowBtn = true.obs;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_scrollListener);
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -47,6 +52,10 @@ class _DetailItemState extends State<DetailItem>
       curve: Curves.easeInOut,
       parent: _controller,
     );
+  }
+
+  void _scrollListener() {
+    currentPagePix.value = _scrollController.position.pixels;
   }
 
   @override
@@ -78,6 +87,8 @@ class _DetailItemState extends State<DetailItem>
 
   @override
   void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -90,6 +101,7 @@ class _DetailItemState extends State<DetailItem>
       child: Scaffold(
         body: SafeArea(
           child: CustomScrollView(
+            controller: _scrollController,
             slivers: [
               Obx(
                 () => buildSliverPersistentHeader(),
@@ -101,20 +113,26 @@ class _DetailItemState extends State<DetailItem>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Container(
-                      //   width: MediaQuery.of(context).size.width / 2,
-                      //   child: ListView.separated(
-                      //     itemCount: testMap.length,
-                      //     separatorBuilder: (BuildContext context, int index) {
-                      //       return const SizedBox(height: 5);
-                      //     },
-                      //     itemBuilder: (BuildContext context, int index) {
-                      //       String key = testMap.keys.elementAt(index);
-                      //       dynamic value = testMap[key];
-                      //       return buildRow(key, value);
-                      //     },
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top:  HomeViewStyle.readTextPadding * 2),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: ListView.separated(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: testMap.length,
+                            separatorBuilder: (BuildContext context, int index) {
+                              return const SizedBox(height: 5);
+                            },
+                            itemBuilder: (BuildContext context, int index) {
+                              String key = testMap.keys.elementAt(index);
+                              dynamic value = testMap[key];
+                              return buildRow(key, value);
+                            },
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: HomeViewStyle.readTextPadding * 2),
@@ -132,6 +150,10 @@ class _DetailItemState extends State<DetailItem>
                       ),
                       Text("""
                       올해 초부터 캘리포니아 농부성 협력기관 한 곳으로부터 의뢰를 받아서 캘리포니아 한인 농부들에게 제공할 여러 가지 문서를 번역해 왔습니다. 작년에 우연한 계기로 서류를 번역해 드렸던 한인분이 적극 추천해 주셔서 본의 아니게 농업 분야 서류를 번역하게 되었네요. 덕분에 우수농산물관리제도(Good Agricultural Practices)라든가 식품안전계획(Food Safety Plan)과 같은 용어에 친숙해졌습니다. 우물 안 개구리처럼 사는 저에게는 새로운 세상이 신기하고 재밌습니다. :-)
+                  
+                  (나중에 타지역 한인 농부들도 참고하도록 웹에다 올릴 계획이고 정부 공개 자료를 이해하기 쉽도록 정리한 내용이니) 기밀을 유지하지 않아도 되는 문서라 한 문장 골라서 분석합니다. 신문 기사나 책처럼 정제되지 않은, 실생활에서 사용하는 문장이라 보시면 되겠습니다. 농장에서 사용하는 물은 1년에 한 번 수질 검사를 해야 하는데, 샘플 채취 방법을 설명하는 문장입니다.
+                  
+                  올해 초부터 캘리포니아 농부성 협력기관 한 곳으로부터 의뢰를 받아서 캘리포니아 한인 농부들에게 제공할 여러 가지 문서를 번역해 왔습니다. 작년에 우연한 계기로 서류를 번역해 드렸던 한인분이 적극 추천해 주셔서 본의 아니게 농업 분야 서류를 번역하게 되었네요. 덕분에 우수농산물관리제도(Good Agricultural Practices)라든가 식품안전계획(Food Safety Plan)과 같은 용어에 친숙해졌습니다. 우물 안 개구리처럼 사는 저에게는 새로운 세상이 신기하고 재밌습니다. :-)
                   
                   (나중에 타지역 한인 농부들도 참고하도록 웹에다 올릴 계획이고 정부 공개 자료를 이해하기 쉽도록 정리한 내용이니) 기밀을 유지하지 않아도 되는 문서라 한 문장 골라서 분석합니다. 신문 기사나 책처럼 정제되지 않은, 실생활에서 사용하는 문장이라 보시면 되겠습니다. 농장에서 사용하는 물은 1년에 한 번 수질 검사를 해야 하는데, 샘플 채취 방법을 설명하는 문장입니다.
                       """),
@@ -195,24 +217,28 @@ class _DetailItemState extends State<DetailItem>
             Positioned(
               right: 0,
               bottom: 0,
-              child: Padding(
-                padding: EdgeInsets.all(iconPaddingSize),
-                child: GestureDetector(
-                  onTap: () {
-                    if (widget.isShowImg != null) {
-                      widget.isShowImg!();
-                    }
-                    toggleFlag();
-                  },
-                  child: Container(
-                    height: iconSize,
-                    width: iconSize,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30)),
-                    child: isImg.value
-                        ? const Icon(Icons.arrow_upward)
-                        : const Icon(Icons.arrow_downward),
+              child: AnimatedOpacity(
+                opacity: (100 - currentPagePix.value).clamp(0, 1),
+                duration: const Duration(milliseconds: 300),
+                child: Padding(
+                  padding: EdgeInsets.all(iconPaddingSize),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (widget.isShowImg != null) {
+                        widget.isShowImg!();
+                      }
+                      toggleFlag();
+                    },
+                    child: Container(
+                      height: iconSize,
+                      width: iconSize,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: isImg.value
+                          ? const Icon(Icons.arrow_upward)
+                          : const Icon(Icons.arrow_downward),
+                    ),
                   ),
                 ),
               ),
