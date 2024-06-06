@@ -8,6 +8,8 @@ import 'package:swf/controller.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
 
+import 'main_style/main_style.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: bindings);
@@ -22,10 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: MainStyle.mainStyle,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
