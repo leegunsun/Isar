@@ -31,6 +31,7 @@ class _ItemListState extends State<ItemList> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: widget.onTap,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

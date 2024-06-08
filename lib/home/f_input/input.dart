@@ -71,6 +71,7 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
       required String key,
       required TextInputAction textInputAction,
       bool needExpanded = false,
+      bool needInnerTitle = false,
       InputDecoration? inputDecoration}) {
     final Map<String, dynamic>? findKey = createHandler[key];
 
@@ -151,7 +152,7 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
                         borderSide: BorderSide(
                             width: 3,
                             strokeAlign: BorderSide.strokeAlignOutside,
-                            color: MainStyleColor.THEME_PRIMARY_NAVY)),
+                            color: MainStyleColor.THEME_PRIMARY_SKY_BLUE)),
                     focusedBorder: InputBorder.none,
                     isCollapsed: true,
                     isDense: true,
@@ -193,18 +194,14 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
         Expanded(
           child: TextFormField(
             focusNode: focusNode,
-            cursorColor: MainStyleColor.THEME_PRIMARY_NAVY,
             controller: textEditingController,
             expands: needExpanded,
             maxLines: widgetMaxLines,
             maxLength: widgetMaxLength,
             decoration: inputDecoration ??
                 InputDecoration(
-                  hintFadeDuration: const Duration(milliseconds: 300),
                   counterText: "",
-                  border: InputBorder.none,
                   hintText: "$title를 입력하세요",
-                  isDense: true,
                 ),
             keyboardType: widgetTextInputType,
             textInputAction: textInputAction,
@@ -242,7 +239,7 @@ class _StarRatingWidgetState extends State<StarRatingWidget> {
       onTap: () => _onStarTapped(index),
       child: Icon(
         icon,
-        color: index < _rating ? Colors.yellow : Colors.grey,
+        color: index < _rating ? MainStyleColor.THEME_PRIMARY_SOFT_PINK : MainStyleColor.THEME_PRIMARY_SKY_BLUE,
       ),
     );
   }

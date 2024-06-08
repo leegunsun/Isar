@@ -117,7 +117,7 @@ class _DetailItemState extends State<DetailItem>
                         padding: const EdgeInsets.only(
                             top:  HomeViewStyle.readTextPadding * 2),
                         child: Container(
-                          width: MediaQuery.of(context).size.width / 2,
+                          width: MediaQuery.of(context).size.width,
                           child: ListView.separated(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -141,10 +141,10 @@ class _DetailItemState extends State<DetailItem>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: Colors.grey[300]),
-                          child: const Center(
+                          child: Center(
                               child: Text(
                             "가난다리만얼;ㅣㅏㄴㅁ얼;미낭러;니ㅏ럼니라가난다리만얼;ㅣㅏㄴㅁ얼;미낭러;니ㅏ럼니라가난다리만얼;ㅣㅏㄴㅁ얼;미낭러;니ㅏ럼니라가난다리만얼;ㅣㅏㄴㅁ얼;미낭러;니ㅏ럼니라가난다리만얼;ㅣㅏㄴㅁ얼;미낭러;니ㅏ럼니라",
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            style: Theme.of(context).textTheme.titleMedium,
                           )),
                         ),
                       ),
@@ -178,7 +178,7 @@ class _DetailItemState extends State<DetailItem>
         Expanded(
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(key),
+            child: Text(key, style: Theme.of(context).textTheme.titleLarge),
           ),
         ),
         Expanded(
@@ -191,7 +191,7 @@ class _DetailItemState extends State<DetailItem>
                       children: List.generate(
                           value, (index) => const Icon(Icons.star)),
                     ))
-                : Text(value),
+                : Text(value, style: Theme.of(context).textTheme.titleLarge),
           ),
         ),
       ],
@@ -217,27 +217,30 @@ class _DetailItemState extends State<DetailItem>
             Positioned(
               right: 0,
               bottom: 0,
-              child: AnimatedOpacity(
-                opacity: (100 - currentPagePix.value).clamp(0, 1),
-                duration: const Duration(milliseconds: 300),
-                child: Padding(
-                  padding: EdgeInsets.all(iconPaddingSize),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (widget.isShowImg != null) {
-                        widget.isShowImg!();
-                      }
-                      toggleFlag();
-                    },
-                    child: Container(
-                      height: iconSize,
-                      width: iconSize,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: isImg.value
-                          ? const Icon(Icons.arrow_upward)
-                          : const Icon(Icons.arrow_downward),
+              child: Offstage(
+                offstage: (100 - currentPagePix.value).clamp(0, 1) == 0,
+                child: AnimatedOpacity(
+                  opacity: (100 - currentPagePix.value).clamp(0, 1),
+                  duration: const Duration(milliseconds: 300),
+                  child: Padding(
+                    padding: EdgeInsets.all(iconPaddingSize),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (widget.isShowImg != null) {
+                          widget.isShowImg!();
+                        }
+                        toggleFlag();
+                      },
+                      child: Container(
+                        height: iconSize,
+                        width: iconSize,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: isImg.value
+                            ? const Icon(Icons.arrow_upward)
+                            : const Icon(Icons.arrow_downward),
+                      ),
                     ),
                   ),
                 ),
