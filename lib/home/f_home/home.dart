@@ -25,6 +25,7 @@ class HomeView extends StatelessWidget {
       future: testtest(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return CustomScrollView(
+          cacheExtent: 300.0,
           slivers: [
             SliverPersistentHeader(
                 delegate: _SliverPersistentHeader(

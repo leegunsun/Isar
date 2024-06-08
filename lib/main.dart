@@ -8,6 +8,7 @@ import 'package:swf/controller.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
 
+import 'home/f_input/input.dart';
 import 'main_style/main_style.dart';
 
 void main() {
@@ -66,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage>  {
   final List<GlobalKey<NavigatorState>> navigatorKeys = [];
 
   int _selectedIndex = 0;
-  int _currentIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -81,6 +81,13 @@ class _MyHomePageState extends State<MyHomePage>  {
         onGenerateRoute: (routeSettings) {
           return MaterialPageRoute(
             builder: (context) => HomeView(),
+          );
+        }),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+            builder: (context) => InputView(),
           );
         })
     // Text("1"),
@@ -99,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage>  {
     return  Scaffold(
       body: SafeArea(
         child: IndexedStack(
-          index: _currentIndex,
+          index: _selectedIndex,
           children: page,
         ),
       ),

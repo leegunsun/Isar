@@ -5,6 +5,15 @@ class MainStyle extends MainStyleColor {
 
   static ThemeData get mainStyle => ThemeData(
     primaryColor: MainStyleColor.THEME_PRIMARY_IVORY,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10)
+          ),
+          foregroundColor: MainStyleColor.THEME_PRIMARY_NAVY,
+          backgroundColor: MainStyleColor.THEME_PRIMARY_IVORY
+      )
+    ),
     appBarTheme: AppBarTheme(
     // color: Colors.blue, // 앱바의 기본 색상
     backgroundColor: Colors.blue[700], // 앱바의 배경 색상
