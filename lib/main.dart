@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:swf/controller.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
+import 'package:swf/home/f_setting/setting.dart';
 
 import 'home/f_input/input.dart';
 import 'home/f_input/input_binding.dart';
@@ -91,6 +92,15 @@ class _MyHomePageState extends State<MyHomePage>  {
             builder: (context) {
               InputBinding().dependencies();
               return InputView(); }
+          );
+        }),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+              builder: (context) {
+                // InputBinding().dependencies();
+                return Setting(); }
           );
         })
   ];

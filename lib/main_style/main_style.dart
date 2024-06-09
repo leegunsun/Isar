@@ -54,6 +54,9 @@ class MainStyle extends MainStyleColor {
     ), // 시스템 오버레이 스타일
   ),
     textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+      ),
       titleLarge: TextStyle(
         fontSize: 20
       ),

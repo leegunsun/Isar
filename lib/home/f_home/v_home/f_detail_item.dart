@@ -201,22 +201,30 @@ class _DetailItemState extends State<DetailItem>
 
   SliverPersistentHeader buildSliverPersistentHeader() {
     return SliverPersistentHeader(
-      pinned: true,
+      // pinned: true,
       delegate: _SliverPersistentHeader(
         maxHight: animatedValue.value,
         minHight: getHeadMinSize,
         child: Stack(
           children: [
-            PageView.builder(
-              itemCount: 3, // item.mainImgUrl.lenght,
-              itemBuilder: (BuildContext context, int index) {
-                return CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: "https://i.namu.wiki/i/fiKhNkmJrnR-0ZEAxy8f2rAi183-DnOAXVF9SC16hzcLMPiK5wSehEyQ7Eww7lPVi48GhYmS7RtK2bkvgzh9ltkZkRofjhb-2dPcUPcylFLrbjJj6qAL52pX1UU_hhEpA5kJCnqR822JAbHrynNQFg.webp",
+            AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(opacity: animation, child: child);
+              },
+              child: animatedValue.value == getHeadMinSize
+                  ? Center(child: Text("역행자", style: Theme.of(context).textTheme.headlineLarge,))
+                  : PageView.builder(
+                itemCount: 3, // item.mainImgUrl.lenght,
+                itemBuilder: (BuildContext context, int index) {
+                  return CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: "https://i.namu.wiki/i/fiKhNkmJrnR-0ZEAxy8f2rAi183-DnOAXVF9SC16hzcLMPiK5wSehEyQ7Eww7lPVi48GhYmS7RtK2bkvgzh9ltkZkRofjhb-2dPcUPcylFLrbjJj6qAL52pX1UU_hhEpA5kJCnqR822JAbHrynNQFg.webp",
                     // color: Colors.accents[index],
                     // child: Center(child: Text("kkkk"))
-                );
-              },
+                  );
+                },
+              ),
             ),
             Positioned(
               right: 0,
