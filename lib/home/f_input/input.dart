@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:swf/home/f_input/f_w_input/f_w_datetimepicker.dart';
 import 'package:swf/home/f_input/f_w_input/f_w_input_field.dart';
 import 'package:swf/main_style/main_style_color.dart';
 
@@ -24,6 +25,8 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
   // 초기화가 필요한 키들을 리스트로 정의합니다.
   List<String> keys = ["_author", "_publisher", "_content"];
   double previousBottomInset = 0.0;
+  DateTime? startDate;
+  DateTime? endDate;
 
   Map<String, Map<String, dynamic>> createHandler = {};
 
@@ -76,6 +79,7 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
   void _runMyFunction() {
     controller.hasFocus.value = false;
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -85,142 +89,86 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
         controller.hasFocus.value = false;
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            // SliverPadding(
-            //   padding: EdgeInsets.all(16.0),
-            //   sliver: SliverList(
-            //     delegate: SliverChildBuilderDelegate(
-            //           (context, index) {
-            //         return Obx(() {
-            //           return Column(
-            //             children: [
-            //               Visibility(
-            //                 visible: !controller.hasFocus.value,
-            //                 child: CreateInputField(
-            //                   title: "저자",
-            //                   mapKey: _findKey("_author"),
-            //                   textInputAction: TextInputAction.next,
-            //                 ),
-            //               ),
-            //               Visibility(
-            //                 visible: !controller.hasFocus.value,
-            //                 child: const SizedBox(height: 16.0),
-            //               ),
-            //               Visibility(
-            //                 visible: !controller.hasFocus.value,
-            //                 child: CreateInputField(
-            //                   title: "출판사",
-            //                   mapKey: _findKey("_publisher"),
-            //                   textInputAction: TextInputAction.next,
-            //                 ),
-            //               ),
-            //               Visibility(
-            //                 visible: !controller.hasFocus.value,
-            //                 child: const SizedBox(height: 16.0),
-            //               ),
-            //               Visibility(
-            //                 visible: !controller.hasFocus.value,
-            //                 child: Row(
-            //                   mainAxisAlignment: MainAxisAlignment.start,
-            //                   children: [
-            //                     const SizedBox(width: 80, child: Text("평점")),
-            //                     StarRatingWidget(),
-            //                   ],
-            //                 ),
-            //               ),
-            //               Visibility(
-            //                 visible: !controller.hasFocus.value,
-            //                 child: const SizedBox(height: 16.0),
-            //               ),
-            //             ],
-            //           );
-            //         });
-            //       },
-            //       childCount: 1,
-            //     ),
-            //   ),
-            // ),
-            Visibility(
-              visible: !controller.hasFocus.value,
-              child: Expanded(
-                flex: 1,
-                child: CreateInputField(
-                  title: "저자",
-                  mapKey: _findKey("_author"),
-                  textInputAction: TextInputAction.next,
+        padding: const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 0),
+        child: Obx(
+          () => Column(
+            children: [
+              _visibilityWidget(
+                child: Expanded(
+                  flex: 1,
+                  child: CreateInputField(
+                    title: "저자",
+                    mapKey: _findKey("_author"),
+                    textInputAction: TextInputAction.next,
+                  ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: !controller.hasFocus.value,
-              child: const SizedBox(height: 16.0),
-            ),
-            Visibility(
-              visible: !controller.hasFocus.value,
-              child: Expanded(
-                flex: 1,
-                child: CreateInputField(
-                  title: "출판사",
-                  mapKey: _findKey("_publisher"),
-                  textInputAction: TextInputAction.next,
+              gapSize(),
+              _visibilityWidget(
+                child: Expanded(
+                  flex: 1,
+                  child: CreateInputField(
+                    title: "출판사",
+                    mapKey: _findKey("_publisher"),
+                    textInputAction: TextInputAction.next,
+                  ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: !controller.hasFocus.value,
-              child: const SizedBox(height: 16.0),
-            ),
-            Visibility(
-              visible: !controller.hasFocus.value,
-              child: Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(width: 80, child: Text("평점")),
-                    StarRatingWidget(),
-                  ],
+              gapSize(),
+              buildVisibilityWidget("시작일", (date) => startDate = date),
+              gapSize(),
+              buildVisibilityWidget("종료일", (date) => endDate = date),
+              gapSize(),
+              _visibilityWidget(
+                child: Expanded(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 80, child: Text("평점")),
+                      StarRatingWidget(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: !controller.hasFocus.value,
-              child: const SizedBox(height: 16.0),
-            ),
-            Expanded(flex:12,child: buildExpanded()),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('저장하기'),
-            ),
-            // SliverPadding(
-            //   padding: const EdgeInsets.all(16.0),
-            //   sliver: SliverList(
-            //     delegate: SliverChildBuilderDelegate(
-            //           (context, index) {
-            //         return Obx(() {
-            //           return Column(
-            //             children: [
-            //               buildExpanded(),
-            //               const SizedBox(height: 16.0),
-            //               ElevatedButton(
-            //                 onPressed: () {},
-            //                 child: const Text('저장하기'),
-            //               ),
-            //             ],
-            //           );
-            //         });
-            //       },
-            //       childCount: 1,
-            //     ),
-            //   ),
-            // ),
-          ],
+              gapSize(),
+              Expanded(flex: 12, child: buildExpanded()),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('저장하기'),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget gapSize() {
+    return _visibilityWidget(
+      child: const SizedBox(height: 16.0),
+    );
+  }
+
+  Widget buildVisibilityWidget(String title, void Function(DateTime) date) {
+    return _visibilityWidget(
+        child: Expanded(
+            child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(width: 80, child: Text(title)),
+        DateTimePicker(
+          selectDate: (dateTime) {
+            date(dateTime);
+          },
+        ),
+      ],
+    )));
+  }
+
+  Widget _visibilityWidget({required Widget child}) {
+    return Visibility(visible: !controller.hasFocus.value, child: child);
   }
 
   Widget buildExpanded() {
@@ -246,5 +194,4 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
       needExpanded: true,
     );
   }
-
 }

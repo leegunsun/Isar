@@ -29,9 +29,9 @@ class HomeView extends StatelessWidget {
           slivers: [
             SliverPersistentHeader(
                 delegate: _SliverPersistentHeader(
-                    maxHight: 100,
+                    maxHight: 50,
                     minHight: 0,
-                    child: Center(child: Text('독서 일기', style: HomeFontStyle.appBarStyle,))
+                    child: Center(child: Text('', style: HomeFontStyle.appBarStyle,))
                 )),
             SliverToBoxAdapter(
               child: HomePageIMG(),
