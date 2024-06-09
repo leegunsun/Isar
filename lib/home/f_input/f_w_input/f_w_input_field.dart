@@ -14,6 +14,7 @@ class InputField extends StatefulWidget {
     required this.needExpanded,
     this.onTap,
     this.title,
+    this.hintTitle,
   });
 
   final TextEditingController textEditingController;
@@ -22,6 +23,7 @@ class InputField extends StatefulWidget {
   final InputDecoration? inputDecoration;
   final bool needExpanded;
   final String? title;
+  final String? hintTitle;
   final void Function()? onTap;
 
   @override
@@ -58,7 +60,7 @@ class _InputFieldState extends State<InputField> {
             decoration: widget.inputDecoration ??
                 InputDecoration(
                   counterText: "",
-                  hintText: "${widget.title}를 입력하세요",
+                  hintText: "${widget.hintTitle}",
                 ),
             keyboardType: widgetTextInputType,
             textInputAction: widget.textInputAction,

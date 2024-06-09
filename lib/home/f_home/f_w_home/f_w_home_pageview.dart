@@ -41,7 +41,7 @@ class _HomePageIMGState extends State<HomePageIMG> {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: HomeViewStyle.readTextPadding),
-          child: Text("자기계발 추천 도서"),
+          child: Text("이 책은 어떤 내용일까요?"),
         ),
         SizedBox(
           height: _boxSize,

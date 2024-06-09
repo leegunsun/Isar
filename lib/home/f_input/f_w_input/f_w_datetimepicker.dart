@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 
+enum DateSelectType {
+  start("시작"),
+  end("종료");
+
+  const DateSelectType(this.name);
+
+  final String name;
+}
+
 class DateTimePicker extends StatefulWidget {
-  const DateTimePicker({super.key, required this.selectDate});
+  const DateTimePicker({
+    super.key,
+    required this.selectDate,
+    required this.dateSelectType
+  });
 
   final void Function(DateTime) selectDate;
+  final DateSelectType dateSelectType;
 
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
@@ -31,6 +45,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
   String _showDate () {
 
     if(_selectedDate == null) {
+      if(widget.dateSelectType == DateSelectType.start) return "언제 읽기 시작했나요?";
+      if(widget.dateSelectType == DateSelectType.end) return "책을 다 읽은 날짜를 선택해주세요.";
+
       return "날짜를 선택해 주세요.";
     }
 
@@ -57,7 +74,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.date_range_outlined),
+            const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.date_range_outlined),
+            ),
             Text(_showDate(),
             )
           ],

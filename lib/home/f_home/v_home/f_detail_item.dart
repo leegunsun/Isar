@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -209,9 +210,12 @@ class _DetailItemState extends State<DetailItem>
             PageView.builder(
               itemCount: 3, // item.mainImgUrl.lenght,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    color: Colors.accents[index],
-                    child: Center(child: Text("kkkk")));
+                return CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: "https://i.namu.wiki/i/fiKhNkmJrnR-0ZEAxy8f2rAi183-DnOAXVF9SC16hzcLMPiK5wSehEyQ7Eww7lPVi48GhYmS7RtK2bkvgzh9ltkZkRofjhb-2dPcUPcylFLrbjJj6qAL52pX1UU_hhEpA5kJCnqR822JAbHrynNQFg.webp",
+                    // color: Colors.accents[index],
+                    // child: Center(child: Text("kkkk"))
+                );
               },
             ),
             Positioned(

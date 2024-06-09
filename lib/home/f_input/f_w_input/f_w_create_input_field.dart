@@ -8,6 +8,7 @@ class CreateInputField extends InputField {
     InputDecoration? inputDecoration,
     bool needExpanded = false,
     String? title,
+    String? hintTitle,
   }) : super(
           key: key,
           textEditingController: mapKey?["controller"],
@@ -24,5 +25,6 @@ class CreateInputField extends InputField {
             }
           },
           title: title,
+          hintTitle: hintTitle,
         );
 }

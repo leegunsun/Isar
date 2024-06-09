@@ -98,6 +98,7 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
                   flex: 1,
                   child: CreateInputField(
                     title: "저자",
+                    hintTitle : "누가 집필 했나요?",
                     mapKey: _findKey("_author"),
                     textInputAction: TextInputAction.next,
                   ),
@@ -109,15 +110,16 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
                   flex: 1,
                   child: CreateInputField(
                     title: "출판사",
+                    hintTitle : "출판사는 어디에요?",
                     mapKey: _findKey("_publisher"),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
               ),
               gapSize(),
-              buildVisibilityWidget("시작일", (date) => startDate = date),
+              buildVisibilityWidget("시작일", (date) => startDate = date, DateSelectType.start),
               gapSize(),
-              buildVisibilityWidget("종료일", (date) => endDate = date),
+              buildVisibilityWidget("종료일", (date) => endDate = date, DateSelectType.end),
               gapSize(),
               _visibilityWidget(
                 child: Expanded(
@@ -151,7 +153,7 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
     );
   }
 
-  Widget buildVisibilityWidget(String title, void Function(DateTime) date) {
+  Widget buildVisibilityWidget(String title, void Function(DateTime) date, DateSelectType dateSelectType) {
     return _visibilityWidget(
         child: Expanded(
             child: Row(
@@ -159,8 +161,9 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
       children: [
         SizedBox(width: 80, child: Text(title)),
         DateTimePicker(
+          dateSelectType : dateSelectType,
           selectDate: (dateTime) {
-            date(dateTime);
+          date(dateTime);
           },
         ),
       ],
@@ -176,7 +179,7 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver {
       mapKey: _findKey("_content"),
       textInputAction: TextInputAction.done,
       inputDecoration: InputDecoration(
-        hintText: "내용을 입력하세요",
+        hintText: "생각한 내용을 적어볼까요?",
         hintFadeDuration: const Duration(milliseconds: 300),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
