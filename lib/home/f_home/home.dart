@@ -8,6 +8,7 @@ import 'package:swf/home/f_home/home_controller.dart';
 import 'package:swf/home/f_home/homebinding.dart';
 import 'package:swf/home/f_home/v_home/f_detail_item.dart';
 import 'package:swf/home/home_style/home_font_style.dart';
+import 'package:swf/home/home_style/home_view_style.dart';
 
 import 'f_w_home/f_w_itemlist.dart';
 
@@ -31,7 +32,8 @@ class HomeView extends StatelessWidget {
     ),
   ))..add(ElevatedButton(onPressed: (){}, child: Text("Test ElevatedButton")));
 
-  final double sliverListPadding = 10;
+
+  final double sliverListPadding = HomeViewStyle.sliverListPadding;
 
   @override
   Widget build(BuildContext context) {
