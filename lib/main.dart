@@ -9,6 +9,8 @@ import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
 
 import 'home/f_input/input.dart';
+import 'home/f_input/input_binding.dart';
+import 'home/f_input/input_contoller.dart';
 import 'main_style/main_style.dart';
 
 void main() {
@@ -75,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage>  {
   }
 
   List<Widget> page = [
-    // HomeFragment(),
     Navigator(
         key: GlobalKey<NavigatorState>(),
         onGenerateRoute: (routeSettings) {
@@ -87,19 +88,12 @@ class _MyHomePageState extends State<MyHomePage>  {
         key: GlobalKey<NavigatorState>(),
         onGenerateRoute: (routeSettings) {
           return MaterialPageRoute(
-            builder: (context) => InputView(),
+            builder: (context) {
+              InputBinding().dependencies();
+              return InputView(); }
           );
         })
-    // Text("1"),
-    // Text("2"),
   ];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
 
   @override
   Widget build(BuildContext context) {

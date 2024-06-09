@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:swf/home/f_input/f_w_input/f_w_input_field.dart';
 import 'package:swf/main_style/main_style_color.dart';
+
+import 'f_w_input/f_w_star.dart';
+import 'input_binding.dart';
+import 'input_contoller.dart';
 
 class InputView extends StatefulWidget {
   InputView({super.key});
@@ -13,10 +18,11 @@ class InputView extends StatefulWidget {
   State<InputView> createState() => _InputViewState();
 }
 
-class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
-// 초기화가 필요한 키들을 리스트로 정의합니다.
+class _InputViewState extends State<InputView> with WidgetsBindingObserver {
+  final controller = Get.find<InputController>();
+
+  // 초기화가 필요한 키들을 리스트로 정의합니다.
   List<String> keys = ["_author", "_publisher", "_content"];
-  RxBool hasFocus = false.obs;
   double previousBottomInset = 0.0;
 
   Map<String, Map<String, dynamic>> createHandler = {};
@@ -26,6 +32,10 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
       "controller": TextEditingController(),
       "focusNode": FocusNode(),
     };
+  }
+
+  Map<String, dynamic>? _findKey(String key) {
+    return createHandler[key];
   }
 
   @override
@@ -45,6 +55,7 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
       value["controller"]?.dispose();
       value["focusNode"]?.dispose();
     });
+    Get.delete<InputController>();
     super.dispose();
   }
 
@@ -52,7 +63,8 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
   void didChangeMetrics() {
     super.didChangeMetrics();
     final double bottomInset = View.of(context).viewInsets.bottom;
-    final bool isKeyboardHidden = previousBottomInset > 0.0 && bottomInset == 0.0;
+    final bool isKeyboardHidden =
+        previousBottomInset > 0.0 && bottomInset == 0.0;
 
     if (isKeyboardHidden) {
       _runMyFunction();
@@ -62,193 +74,177 @@ class _InputViewState extends State<InputView> with WidgetsBindingObserver  {
   }
 
   void _runMyFunction() {
-    // 여기에서 원하는 작업을 수행합니다
-    hasFocus.value = false;
+    controller.hasFocus.value = false;
   }
-
-  Widget buildTextInputRow(
-      {String? title,
-      required String key,
-      required TextInputAction textInputAction,
-      bool needExpanded = false,
-      bool needInnerTitle = false,
-      InputDecoration? inputDecoration}) {
-    final Map<String, dynamic>? findKey = createHandler[key];
-
-    return buildRow(
-        title: title,
-        textEditingController: findKey?["controller"],
-        focusNode: findKey?["focusNode"],
-        textInputAction: textInputAction,
-        inputDecoration: inputDecoration,
-        needExpanded: needExpanded);
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        hasFocus.value = false;
+        controller.hasFocus.value = false;
       },
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Obx(
-          () => Column(
-            children: [
-              Visibility(
-                visible: !hasFocus.value,
-                child: Expanded(
-                  flex: 1,
-                  child: buildTextInputRow(
-                      title: "저자",
-                      key: "_author",
-                      textInputAction: TextInputAction.next),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            // SliverPadding(
+            //   padding: EdgeInsets.all(16.0),
+            //   sliver: SliverList(
+            //     delegate: SliverChildBuilderDelegate(
+            //           (context, index) {
+            //         return Obx(() {
+            //           return Column(
+            //             children: [
+            //               Visibility(
+            //                 visible: !controller.hasFocus.value,
+            //                 child: CreateInputField(
+            //                   title: "저자",
+            //                   mapKey: _findKey("_author"),
+            //                   textInputAction: TextInputAction.next,
+            //                 ),
+            //               ),
+            //               Visibility(
+            //                 visible: !controller.hasFocus.value,
+            //                 child: const SizedBox(height: 16.0),
+            //               ),
+            //               Visibility(
+            //                 visible: !controller.hasFocus.value,
+            //                 child: CreateInputField(
+            //                   title: "출판사",
+            //                   mapKey: _findKey("_publisher"),
+            //                   textInputAction: TextInputAction.next,
+            //                 ),
+            //               ),
+            //               Visibility(
+            //                 visible: !controller.hasFocus.value,
+            //                 child: const SizedBox(height: 16.0),
+            //               ),
+            //               Visibility(
+            //                 visible: !controller.hasFocus.value,
+            //                 child: Row(
+            //                   mainAxisAlignment: MainAxisAlignment.start,
+            //                   children: [
+            //                     const SizedBox(width: 80, child: Text("평점")),
+            //                     StarRatingWidget(),
+            //                   ],
+            //                 ),
+            //               ),
+            //               Visibility(
+            //                 visible: !controller.hasFocus.value,
+            //                 child: const SizedBox(height: 16.0),
+            //               ),
+            //             ],
+            //           );
+            //         });
+            //       },
+            //       childCount: 1,
+            //     ),
+            //   ),
+            // ),
+            Visibility(
+              visible: !controller.hasFocus.value,
+              child: Expanded(
+                flex: 1,
+                child: CreateInputField(
+                  title: "저자",
+                  mapKey: _findKey("_author"),
+                  textInputAction: TextInputAction.next,
                 ),
               ),
-              Visibility(
-                  visible: !hasFocus.value,
-                  child: const SizedBox(height: 16.0)),
-              Visibility(
-                visible: !hasFocus.value,
-                child: Expanded(
-                  flex: 1,
-                  child: buildTextInputRow(
-                      title: "출판사",
-                      key: "_publisher",
-                      textInputAction: TextInputAction.next),
+            ),
+            Visibility(
+              visible: !controller.hasFocus.value,
+              child: const SizedBox(height: 16.0),
+            ),
+            Visibility(
+              visible: !controller.hasFocus.value,
+              child: Expanded(
+                flex: 1,
+                child: CreateInputField(
+                  title: "출판사",
+                  mapKey: _findKey("_publisher"),
+                  textInputAction: TextInputAction.next,
                 ),
               ),
-              Visibility(
-                  visible: !hasFocus.value,
-                  child: const SizedBox(height: 16.0)),
-              Visibility(
-                visible: !hasFocus.value,
-                child: Expanded(
-                  flex: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 80, child: Text("평점")),
-                      StarRatingWidget(),
-                    ],
-                  ),
+            ),
+            Visibility(
+              visible: !controller.hasFocus.value,
+              child: const SizedBox(height: 16.0),
+            ),
+            Visibility(
+              visible: !controller.hasFocus.value,
+              child: Expanded(
+                flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 80, child: Text("평점")),
+                    StarRatingWidget(),
+                  ],
                 ),
               ),
-              Visibility(
-                  visible: !hasFocus.value,
-                  child: const SizedBox(height: 16.0)),
-              Expanded(
-                flex: 12,
-                child: buildTextInputRow(
-                  key: "_content",
-                  textInputAction: TextInputAction.done,
-                  inputDecoration: InputDecoration(
-                    hintText: "내용을 입력하세요",
-                    hintFadeDuration: const Duration(milliseconds: 300),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                            width: 3,
-                            strokeAlign: BorderSide.strokeAlignOutside,
-                            color: MainStyleColor.THEME_PRIMARY_SKY_BLUE)),
-                    focusedBorder: InputBorder.none,
-                    isCollapsed: true,
-                    isDense: true,
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                  needExpanded: true,
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  // 제출 버튼에 대한 동작 추가
-                },
-                child: const Text('저장하기'),
-              ),
-            ],
-          ),
+            ),
+            Visibility(
+              visible: !controller.hasFocus.value,
+              child: const SizedBox(height: 16.0),
+            ),
+            Expanded(flex:12,child: buildExpanded()),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('저장하기'),
+            ),
+            // SliverPadding(
+            //   padding: const EdgeInsets.all(16.0),
+            //   sliver: SliverList(
+            //     delegate: SliverChildBuilderDelegate(
+            //           (context, index) {
+            //         return Obx(() {
+            //           return Column(
+            //             children: [
+            //               buildExpanded(),
+            //               const SizedBox(height: 16.0),
+            //               ElevatedButton(
+            //                 onPressed: () {},
+            //                 child: const Text('저장하기'),
+            //               ),
+            //             ],
+            //           );
+            //         });
+            //       },
+            //       childCount: 1,
+            //     ),
+            //   ),
+            // ),
+          ],
         ),
       ),
     );
   }
 
-  Row buildRow({
-    required TextEditingController textEditingController,
-    required FocusNode focusNode,
-    required TextInputAction textInputAction,
-    String? title,
-    InputDecoration? inputDecoration,
-    required bool needExpanded,
-  }) {
-    final int? widgetMaxLines = needExpanded ? null : 1;
-    final int? widgetMaxLength = needExpanded ? null : 15;
-    final TextInputType widgetTextInputType =
-        needExpanded ? TextInputType.multiline : TextInputType.text;
-
-    return Row(
-      children: [
-        if (title != null) SizedBox(width: 80, child: Text(title)),
-        Expanded(
-          child: TextFormField(
-            focusNode: focusNode,
-            controller: textEditingController,
-            expands: needExpanded,
-            maxLines: widgetMaxLines,
-            maxLength: widgetMaxLength,
-            decoration: inputDecoration ??
-                InputDecoration(
-                  counterText: "",
-                  hintText: "$title를 입력하세요",
-                ),
-            keyboardType: widgetTextInputType,
-            textInputAction: textInputAction,
-            onTap: () {
-              if (needExpanded) {
-                hasFocus.value = true;
-              } else {
-                hasFocus.value = false;
-              }
-            },
+  Widget buildExpanded() {
+    return CreateInputField(
+      mapKey: _findKey("_content"),
+      textInputAction: TextInputAction.done,
+      inputDecoration: InputDecoration(
+        hintText: "내용을 입력하세요",
+        hintFadeDuration: const Duration(milliseconds: 300),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 3,
+            strokeAlign: BorderSide.strokeAlignOutside,
+            color: MainStyleColor.THEME_PRIMARY_SKY_BLUE,
           ),
         ),
-      ],
-    );
-  }
-}
-
-class StarRatingWidget extends StatefulWidget {
-  @override
-  _StarRatingWidgetState createState() => _StarRatingWidgetState();
-}
-
-class _StarRatingWidgetState extends State<StarRatingWidget> {
-  int _rating = 0;
-
-  void _onStarTapped(int index) {
-    setState(() {
-      _rating = index + 1;
-    });
-  }
-
-  Widget _buildStar(int index) {
-    IconData icon = index < _rating ? Icons.star : Icons.star_border;
-    return GestureDetector(
-      onTap: () => _onStarTapped(index),
-      child: Icon(
-        icon,
-        color: index < _rating ? MainStyleColor.THEME_PRIMARY_SOFT_PINK : MainStyleColor.THEME_PRIMARY_SKY_BLUE,
+        focusedBorder: InputBorder.none,
+        isCollapsed: true,
+        isDense: true,
+        contentPadding: EdgeInsets.all(10),
       ),
+      needExpanded: true,
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) => _buildStar(index)),
-    );
-  }
 }
