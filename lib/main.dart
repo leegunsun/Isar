@@ -12,7 +12,7 @@ import 'package:swf/home/f_setting/setting.dart';
 import 'home/f_input/input.dart';
 import 'home/f_input/input_binding.dart';
 import 'home/f_input/input_contoller.dart';
-import 'main_style/main_style.dart';
+import 'main_style/main_Theme_data.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: MainStyle.mainStyle,
+      theme: MainThemeData().mainStyle,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -102,7 +102,16 @@ class _MyHomePageState extends State<MyHomePage>  {
                 // InputBinding().dependencies();
                 return Setting(); }
           );
-        })
+        }),
+    // Navigator(
+    //     key: GlobalKey<NavigatorState>(),
+    //     onGenerateRoute: (routeSettings) {
+    //       return MaterialPageRoute(
+    //           builder: (context) {
+    //             // InputBinding().dependencies();
+    //             return Setting(); }
+    //       );
+    //     })
   ];
 
   @override

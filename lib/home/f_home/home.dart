@@ -44,8 +44,8 @@ class HomeView extends StatelessWidget {
             cacheExtent: 300.0,
             slivers: [
               ...topImgWidget(),
-              ...horizontalWidget(),
-              ...listWidget(),
+              ...horizontalWidget(context),
+              ...listWidget(context),
             ],
           );
         });
@@ -68,11 +68,11 @@ class HomeView extends StatelessWidget {
     ];
   }
 
-  List<Widget> horizontalWidget () {
+  List<Widget> horizontalWidget (BuildContext context) {
     return[
     _sliverPadding(
-        sliver: const SliverToBoxAdapter(
-          child: Text("😄 나만의 도서관"),
+        sliver: SliverToBoxAdapter(
+          child: Text("😄 나만의 도서관",style: Theme.of(context).textTheme.titleLarge),
         ),
       ),
     _sliverPadding(
@@ -98,11 +98,11 @@ class HomeView extends StatelessWidget {
     ];
   }
 
-  List<Widget> listWidget () {
+  List<Widget> listWidget (BuildContext context) {
     return [
     _sliverPadding(
-        sliver: const SliverToBoxAdapter(
-          child: Text("✨ 최근 내역"),
+        sliver: SliverToBoxAdapter(
+          child: Text("✨ 최근 내역",style: Theme.of(context).textTheme.titleLarge),
         ),
       ),
     _sliverPadding(

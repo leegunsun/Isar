@@ -1,10 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:swf/main_style/main_style_color.dart';
 
-class Setting extends StatelessWidget {
+enum SettingType {
+  Userinfo;
+}
+
+class Setting extends StatefulWidget {
   Setting({super.key});
+
+  @override
+  State<Setting> createState() => _SettingState();
+}
+
+class _SettingState extends State<Setting> {
+
+  double? mediaWidth;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    mediaWidth = Get.width;
+  }
 
   final List<Widget> testList = List.generate(
     3,
@@ -26,7 +46,7 @@ class Setting extends StatelessWidget {
 
   final List<Widget> testList2 = List.generate(
     3,
-        (index) {
+    (index) {
       final List<String> testListInputText = ["Test1", "Test2", "Test3"];
 
       return Container(
@@ -36,7 +56,9 @@ class Setting extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-          child: AspectRatio(aspectRatio: 3/2 ,child: Center(child: Text("${testListInputText[index]}"))),
+          child: AspectRatio(
+              aspectRatio: 3 / 2,
+              child: Center(child: Text("${testListInputText[index]}"))),
         ),
       );
     },
@@ -54,8 +76,8 @@ class Setting extends StatelessWidget {
             children: [
               Flexible(
                 child: Container(
-                  width: 100,
-                  height: 100,
+                  width: 80,
+                  height: 80,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: MainStyleColor.THEME_PRIMARY_LAVENDER,
@@ -109,6 +131,16 @@ class Setting extends StatelessWidget {
                   itemCount: testList2.length),
             ),
           ),
+          Container(
+            // height: 60,
+            // width: 100,
+            width: mediaWidth,
+            color: MainStyleColor.THEME_PRIMARY_MINT_GREEN,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text("유저 정보"),
+            ),
+          )
         ],
       ),
     );

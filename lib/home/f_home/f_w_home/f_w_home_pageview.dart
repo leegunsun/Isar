@@ -39,9 +39,9 @@ class _HomePageIMGState extends State<HomePageIMG> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: HomeViewStyle.readTextPadding),
-          child: Text("이 책은 어떤 내용일까요?"),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: HomeViewStyle.readTextPadding),
+          child: Text("이 책은 어떤 내용일까요?", style: Theme.of(context).textTheme.titleLarge),
         ),
         SizedBox(
           height: _boxSize,
