@@ -1,22 +1,29 @@
 
 import 'dart:math' as math;
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:swf/controller.dart';
+import 'package:swf/firebase_options.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
 import 'package:swf/home/f_setting/setting.dart';
 
+import 'firebase/fire_storage/fire_storage.dart';
 import 'home/f_input/input.dart';
 import 'home/f_input/input_binding.dart';
 import 'home/f_input/input_contoller.dart';
 import 'main_style/main_Theme_data.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   // FlutterNativeSplash.preserve(widgetsBinding: bindings);
+  Get.put(FireStorage());
   Get.put(TestController());
   runApp(const MyApp());
 }
