@@ -104,8 +104,8 @@ mixin AppBarStyle {
 
 }
 
-mixin BottomNavStyle {
-
-  BottomNavigationBarTheme bottomNavigationBarTheme = BottomNavigationBarTheme(data: data);
-
-}
+// mixin BottomNavStyle {
+//
+//   BottomNavigationBarTheme bottomNavigationBarTheme = BottomNavigationBarTheme(data: data);
+//
+// }

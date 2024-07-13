@@ -42,7 +42,7 @@ class _HomePageIMGState extends State<HomePageIMG> with SingleTickerProviderStat
     super.initState();
 
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
-    animation = Tween<double>(begin: 0, end: 10).animate(animationController);
+    animation = Tween<double>(begin: 0, end: 20).animate(animationController);
 
     _pageController.addListener(() {
       if (_pageController.page != _pageController.page?.roundToDouble()) {
@@ -138,7 +138,7 @@ class _HomePageIMGState extends State<HomePageIMG> with SingleTickerProviderStat
               left: 0,
               right: 0,
               bottom: 0,
-              top: 0,
+              top: -1,
               child: Align(
                 alignment: Alignment.topCenter,
                 child: AnimatedBuilder(
@@ -155,7 +155,7 @@ class _HomePageIMGState extends State<HomePageIMG> with SingleTickerProviderStat
             Positioned(
               left: 0,
               right: 0,
-              bottom: 0,
+              bottom: -1,
               top: 0,
               child: Align(
                 alignment: Alignment.bottomCenter,

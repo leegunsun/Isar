@@ -130,18 +130,52 @@ class _MyHomePageState extends State<MyHomePage>  {
         })
   ];
 
+  Future<bool> _showExitConfirmationDialog() async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('앱 종료'),
+        content: Text('앱을 종료하시겠습니까?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('아니요'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('예'),
+          ),
+        ],
+      ),
+    ) ??
+        false;
+  }
+
+  void _handlePopInvoked(bool didPop) async {
+    if (!didPop) {
+      bool shouldExit = await _showExitConfirmationDialog();
+      if (shouldExit) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: SafeArea(
-        child: IndexedStack(
-          index: _selectedIndex,
-          children: page,
+    return  PopScope (
+      canPop: false,
+      onPopInvoked: _handlePopInvoked,
+      child: Scaffold(
+        body: SafeArea(
+          child: IndexedStack(
+            index: _selectedIndex,
+            children: page,
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNav(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
+        bottomNavigationBar: BottomNav(
+          selectedIndex: _selectedIndex,
+          onItemTapped: _onItemTapped,
+        ),
       ),
     );
   }
