@@ -1,23 +1,35 @@
 
 import 'dart:math' as math;
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:swf/controller.dart';
+import 'package:swf/firebase_options.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
 import 'package:swf/home/f_setting/setting.dart';
+import 'package:swf/rive/artboardnestedinputs.dart';
+import 'package:swf/rive/event_star_rating.dart';
+import 'package:swf/testlab.dart';
 
+import 'firebase/fire_storage/fire_storage.dart';
 import 'home/f_input/input.dart';
 import 'home/f_input/input_binding.dart';
 import 'home/f_input/input_contoller.dart';
 import 'home/f_setting/pagetest.dart';
+import 'main_style/main_Theme_data.dart';
 import 'main_style/main_style.dart';
 
-void main() {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   // FlutterNativeSplash.preserve(widgetsBinding: bindings);
+  Get.put(FireStorage());
   Get.put(TestController());
   runApp(const MyApp());
 }
@@ -29,7 +41,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: MainStyle.mainStyle,
+      theme: MainThemeData().mainStyle,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -101,8 +113,18 @@ class _MyHomePageState extends State<MyHomePage>  {
           return MaterialPageRoute(
               builder: (context) {
                 // InputBinding().dependencies();
-                return PagingDemo();
-                // return Setting();
+                // return EventStarRating();
+                return Setting();
+              }
+          );
+        }),
+    Navigator(
+        key: GlobalKey<NavigatorState>(),
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+              builder: (context) {
+                // InputBinding().dependencies();
+                return TestLab();
               }
           );
         })

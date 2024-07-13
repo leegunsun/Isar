@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'package:swf/main_style/main_style.dart';
+import 'package:swf/main_style/main_Theme_data.dart';
 
 class MainStyleColor {
-  static Color THEME_PRIMARY_SKY_BLUE = const Color(0xff87CEEB); // 하늘색
+  static Color THEME_PRIMARY_SKY_BLUE = const Color(0xffd9eaff); // 하늘색
   static Color THEME_PRIMARY_PALE_YELLOW = const Color(0xffFFFFE0); // 옅은 노랑
   static Color THEME_PRIMARY_MINT_GREEN = const Color(0xff98FF98); // 민트 그린
   static Color THEME_PRIMARY_SOFT_PINK = const Color(0xffFFB6C1); // 연한 핑크

@@ -49,7 +49,7 @@ class _InputFieldState extends State<InputField> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (widget.title != null) SizedBox(width: 80, child: Text(widget.title!)),
+        if (widget.title != null) SizedBox(width: 80, child: Text(widget.title!, style: Theme.of(context).textTheme.titleMedium,)),
         Expanded(
           child: TextFormField(
             focusNode: widget.focusNode,

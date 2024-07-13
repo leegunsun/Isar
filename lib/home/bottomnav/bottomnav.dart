@@ -27,13 +27,14 @@ class _BottomNavState extends State<BottomNav> {
           icon: Icon(Icons.notifications),
           label: 'Notifications',
         ),
-        // BottomNavigationBarItem(
-        //   icon: Icon(Icons.person),
-        //   label: 'Profile',
-        // ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.cabin),
+          label: 'Lab',
+        ),
       ],
       currentIndex: widget.selectedIndex,
       selectedItemColor: Colors.amber[800],
+      unselectedItemColor: Colors.grey,
       onTap: widget.onItemTapped,
     );
   }
