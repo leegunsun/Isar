@@ -12,6 +12,7 @@ import 'package:swf/home/f_setting/setting.dart';
 import 'home/f_input/input.dart';
 import 'home/f_input/input_binding.dart';
 import 'home/f_input/input_contoller.dart';
+import 'home/f_setting/pagetest.dart';
 import 'main_style/main_style.dart';
 
 void main() {
@@ -100,7 +101,9 @@ class _MyHomePageState extends State<MyHomePage>  {
           return MaterialPageRoute(
               builder: (context) {
                 // InputBinding().dependencies();
-                return Setting(); }
+                return PagingDemo();
+                // return Setting();
+              }
           );
         })
   ];

@@ -219,7 +219,7 @@ class _DetailItemState extends State<DetailItem>
                 itemBuilder: (BuildContext context, int index) {
                   return CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: "https://i.namu.wiki/i/fiKhNkmJrnR-0ZEAxy8f2rAi183-DnOAXVF9SC16hzcLMPiK5wSehEyQ7Eww7lPVi48GhYmS7RtK2bkvgzh9ltkZkRofjhb-2dPcUPcylFLrbjJj6qAL52pX1UU_hhEpA5kJCnqR822JAbHrynNQFg.webp",
+                    imageUrl: "https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004",
                     // color: Colors.accents[index],
                     // child: Center(child: Text("kkkk"))
                   );
