@@ -1,10 +1,13 @@
 
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:swf/controller.dart';
 import 'package:swf/firebase_options.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
@@ -25,14 +28,72 @@ import 'main_style/main_style.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 커스텀 출력을 사용하는 Logger 초기화
+  Logger logger = Logger(output: FileOutput());
+
+  // Logger의 초기화가 완료될 때까지 대기
+  await logger.init;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
   // FlutterNativeSplash.preserve(widgetsBinding: bindings);
+  Get.put(logger);
   Get.put(FireStorage());
   Get.put(TestController());
   runApp(const MyApp());
 }
+
+
+class FileOutput extends LogOutput {
+  late File _logFile;
+
+  FileOutput() {
+    _initializeLogFile();
+  }
+
+  Future<void> _initializeLogFile() async {
+    final directory = await getApplicationDocumentsDirectory();
+    _logFile = File('${directory.path}/app_logs.txt');
+    if (!await _logFile.exists()) {
+      await _logFile.create();
+    }
+  }
+
+  @override
+  Future<void> init() async {
+    await _initializeLogFile();
+  }
+
+  @override
+  void output(OutputEvent event) {
+    for (var line in event.lines) {
+      if (event.level.index >= Level.error.index) {
+        _logFile.writeAsStringSync('$line\n', mode: FileMode.append);
+      }
+    }
+  }
+
+  @override
+  Future<void> destroy() async {
+    // Clean up resources if necessary
+  }
+}
+//
+// void setupLogging() {
+//   Logger.level = Level.fatal;
+//   Logger.addLogListener((event) {
+//       print('${event.level.name}: ${event.time}: ${event.message}, ${event.error}');
+//       _writeLogToFile(event);
+//   });
+// }
+//
+// Future<void> _writeLogToFile(LogEvent record) async {
+//   final directory = await getApplicationDocumentsDirectory();
+//   final path = '${directory.path}/app_logs.txt';
+//   final file = File(path);
+//   final logMessage = '${record.level.name}: ${record.time}: ${record.message}\n ${record.stackTrace}';
+//   await file.writeAsString(logMessage, mode: FileMode.append);
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
