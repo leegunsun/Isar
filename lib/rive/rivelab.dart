@@ -13,6 +13,7 @@ import 'package:swf/rive/event_open_url_button.dart';
 import 'package:swf/rive/event_sounds.dart';
 import 'package:swf/rive/event_star_rating.dart';
 import 'package:swf/rive/example_state_machine.dart';
+import 'package:swf/rive/heart_icon.dart';
 import 'package:swf/rive/liquid_download.dart';
 import 'package:swf/rive/little_machine.dart';
 import 'package:swf/rive/play_one_shot_animation.dart';
@@ -57,6 +58,7 @@ class _RiveLabState extends State<RiveLab> {
     const EventSounds(),
     const ExampleStateMachine(),
     const LiquidDownload(),
+    const HeartRiveIcon(),
   ];
 
   void _onChanged (bool? value, int index) {

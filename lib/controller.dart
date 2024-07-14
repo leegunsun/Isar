@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'dart:math' as math;
 import 'package:isar/isar.dart';
 import 'package:math_expressions/math_expressions.dart';
@@ -21,22 +22,25 @@ class TestController extends GetxController {
     openIsar();
   }
 
+  RxInt testValue = 0.obs;
+
   Future openIsar() async {
     final dir = await getApplicationDocumentsDirectory();
-    final namedopenisar =
-        await Isar.open([UserSchema, TestCollectionSchema, IgTestSchema],
-            // directory: '/data/user/1/com.example.swf/app_flutter', // ERROR CODE
-            directory: '${dir.path}',
-            name: 'test1',
-            inspector: true);
+
+    // Isar 인스턴스가 이미 열려 있는지 확인
+    if (Isar.instanceNames.contains('test1')) {
+      isar = Isar.getInstance('test1')!;
+    } else {
+      final namedopenisar = await Isar.open(
+        [UserSchema, TestCollectionSchema, IgTestSchema],
+        directory: '${dir.path}',
+        name: 'test1',
+        inspector: true,
+      );
+      isar = namedopenisar;
+    }
 
     print('${dir.path}');
-
-    // final openisar = await Isar.open(
-    //     [UserSchema, TestCollectionSchema, IgTestSchema],
-    //     directory: dir.path, name: 'default', inspector: true);
-
-    isar = namedopenisar;
   }
 
   late Isar isar;
