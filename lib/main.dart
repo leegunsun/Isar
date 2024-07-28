@@ -3,7 +3,9 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -143,7 +145,64 @@ class _MyHomePageState extends State<MyHomePage>  {
   //     MerchantEditText.max.index, (index) => TextEditingController());
   final List<GlobalKey<NavigatorState>> navigatorKeys = [];
 
+
   int _selectedIndex = 0;
+  final FlutterLocalNotificationsPlugin _local = FlutterLocalNotificationsPlugin();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _initNoti();
+    _initializeFCM();
+  }
+
+  void _initNoti () async {
+
+    AndroidInitializationSettings android =
+    const AndroidInitializationSettings("@mipmap/ic_launcher");
+    DarwinInitializationSettings ios = const DarwinInitializationSettings(
+      requestSoundPermission: false,
+      requestBadgePermission: false,
+      requestAlertPermission: false,
+    );
+    InitializationSettings settings =
+    InitializationSettings(android: android, iOS: ios);
+    await _local.initialize(settings);
+  }
+
+  void _initializeFCM() {
+    // Foreground 메시지 수신
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Received a message in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+        print('Message also contained a notification: ${message.notification?.title}');
+        print('Message also contained a notification: ${message.notification?.body}');
+        AndroidNotification? and = message.notification?.android;
+        print(and);
+      }
+    });
+
+    // Background 메시지 수신
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Message clicked!');
+    });
+
+    // 앱이 종료된 상태에서 수신한 메시지
+    // FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage message) {
+    //   if (message != null) {
+    //     print('Message clicked from terminated state!');
+    //   }
+    // });
+
+    // _firebaseMessaging.getToken().then((String token) {
+    //   assert(token != null);
+    //   print("FCM Token: $token");
+    // });
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -227,6 +286,26 @@ class _MyHomePageState extends State<MyHomePage>  {
       canPop: false,
       onPopInvoked: _handlePopInvoked,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            NotificationDetails details = const NotificationDetails(
+              iOS: DarwinNotificationDetails(
+                presentAlert: true,
+                presentBadge: true,
+                presentSound: true,
+              ),
+              android: AndroidNotificationDetails(
+                "1",
+                "test",
+                importance: Importance.max,
+                priority: Priority.high,
+              ),
+            );
+
+            _local.show(1, "title", "body", details);
+
+          },
+        ),
         body: SafeArea(
           child: IndexedStack(
             index: _selectedIndex,
