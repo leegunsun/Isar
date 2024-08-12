@@ -1,7 +1,10 @@
 
+import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:app_links/app_links.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +13,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:swf/controller.dart';
 import 'package:swf/firebase_options.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
@@ -288,21 +294,24 @@ class _MyHomePageState extends State<MyHomePage>  {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            NotificationDetails details = const NotificationDetails(
-              iOS: DarwinNotificationDetails(
-                presentAlert: true,
-                presentBadge: true,
-                presentSound: true,
-              ),
-              android: AndroidNotificationDetails(
-                "1",
-                "test",
-                importance: Importance.max,
-                priority: Priority.high,
-              ),
-            );
+            // NotificationDetails details = const NotificationDetails(
+            //   iOS: DarwinNotificationDetails(
+            //     presentAlert: true,
+            //     presentBadge: true,
+            //     presentSound: true,
+            //   ),
+            //   android: AndroidNotificationDetails(
+            //     "1",
+            //     "test",
+            //     importance: Importance.max,
+            //     priority: Priority.high,
+            //   ),
+            // );
+            //
+            // _local.show(1, "title", "body", details);
 
-            _local.show(1, "title", "body", details);
+          // Get.to(() => QrScan());
+          Get.to(() => TestQR());
 
           },
         ),
@@ -504,3 +513,196 @@ class CustomTextOverflowWidget extends StatelessWidget {
 //     ],
 //   ),
 // );
+
+
+class TestQR extends StatefulWidget {
+  const TestQR({super.key});
+
+  @override
+  State<TestQR> createState() => _TestQRState();
+}
+
+class _TestQRState extends State<TestQR> {
+  @override
+  Widget build(BuildContext context) {
+
+    StreamSubscription _sub;
+    late AppLinks _appLinks;
+
+    void openAppLink(Uri uri) {
+      print(uri);
+    }
+
+    Future<void> initDeepLinks() async {
+      _appLinks = AppLinks();
+
+      _sub = _appLinks.uriLinkStream.listen((event) {
+        print('ononononon : $event');
+        openAppLink(event);
+      });
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      initDeepLinks();
+    }
+
+
+    return Scaffold(
+      body: Center(
+        child: QrImageView(
+          data: "http://localhost:8081/qrTest",
+          version: QrVersions.auto,
+          errorCorrectionLevel: QrErrorCorrectLevel.H,
+          embeddedImage: AssetImage("assets/testPng.png"),
+          embeddedImageStyle: QrEmbeddedImageStyle(
+            size: Size(100, 100),
+          ),
+        ),
+      ),
+    );
+  }
+}
+class QrScan extends StatefulWidget {
+  const QrScan({Key? key}) : super(key: key);
+
+  @override
+  State<QrScan> createState() => _QrScanState();
+}
+
+class _QrScanState extends State<QrScan> {
+  final qrKey = GlobalKey(debugLabel: 'QR');
+
+  Barcode? barcode;
+  QRViewController? controller;
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          buildQrView(context),
+          Positioned(bottom: 10, child: buildResult()),
+          Positioned(
+            top: Get.mediaQuery.padding.top + 8,
+            left: 10,
+            child: Text(
+              'QR Code Scan',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.cyan.withOpacity(0.7),
+              ),
+            ),
+
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildResult() {
+    if (barcode != null) {
+      controller?.pauseCamera();
+
+      Future.microtask(() {
+//        사용자Web(uri: barcode!.code.toString()
+        controller?.resumeCamera();
+      });
+    }
+    return Column(
+      children: [
+        Text(
+          barcode != null ? 'Result : ${barcode!.code}' : 'Scan a code!',
+          maxLines: 3,
+        ),
+        const Text(
+          'Qr 코드 용지를 사각 안에 맞혀 스캔해 주세요',
+        ),
+      ],
+    );
+  }
+
+
+  // This method is called when the permission is set
+  void _onPermissionSet(QRViewController ctrl, bool p) {
+    openAppSettings();
+    // print('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    // if (!p) {
+    //   // Handle the case when permission is denied
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('Camera permission denied')),
+    //   );
+    // }
+  }
+
+  Widget buildQrView(BuildContext context) =>
+      QRView(
+        onPermissionSet: _onPermissionSet,
+        key: qrKey,
+        onQRViewCreated: onQRViewCreated,
+        overlay: QrScannerOverlayShape(
+            borderColor: Colors.cyanAccent,
+            borderRadius: 10,
+            borderLength: 20,
+            borderWidth: 10,
+            cutOutSize: MediaQuery
+                .of(context)
+                .size
+                .width * 0.8),
+      );
+
+  void onQRViewCreated(QRViewController _controller) {
+    controller = _controller;
+
+    controller!.scannedDataStream.listen((scanData) async {
+      setState(() {
+        barcode = scanData;
+      });
+    });
+  }
+}
+
+
+// Future<void> permissionRequest(
+//     {required BuildContext context,
+//       required Permission permission,}) async {
+//   // print('---> permission status: ${permission.status}');
+//
+//   if (await permission.request().isGranted) {
+//     if (callback != null) {
+//       callback();
+//     }
+//   } else {
+//     openAppSettings();
+//     // context.showFlashDialog(
+//     //     content:
+//     //         Text('${permissionName[permission]} 권한을 허용해주세요.\n설정 화면으로 가시겠습니까?'),
+//     //     positiveActionBuilder: (context, flashController, _) {
+//     //       return TextButton(
+//     //         onPressed: () {
+//     //           flashController.dismiss();
+//     //           openAppSettings();
+//     //         },
+//     //         child: Text('예'),
+//     //       );
+//     //     },
+//     //     negativeActionBuilder: (context, flashController, _) {
+//     //       return TextButton(
+//     //         onPressed: () {
+//     //           flashController.dismiss();
+//     //         },
+//     //         child: Text('아니오'),
+//     //       );
+//     //     });
+//   }
+// }
+//
