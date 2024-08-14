@@ -2,12 +2,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:app_links/app_links.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,11 +18,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:swf/controller.dart';
 import 'package:swf/firebase_options.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
 import 'package:swf/home/f_setting/setting.dart';
+import 'package:swf/notionApi/notion_api_service.dart';
 import 'package:swf/rive/artboardnestedinputs.dart';
 import 'package:swf/rive/event_star_rating.dart';
 import 'package:swf/testlab.dart';
@@ -44,6 +48,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+
+  Get.put<NotionApiService>(NotionApiService());
   // FlutterNativeSplash.preserve(widgetsBinding: bindings);
   Get.put(logger);
   Get.put(FireStorage());
@@ -192,22 +198,9 @@ class _MyHomePageState extends State<MyHomePage>  {
       }
     });
 
-    // Background 메시지 수신
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Message clicked!');
     });
-
-    // 앱이 종료된 상태에서 수신한 메시지
-    // FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage message) {
-    //   if (message != null) {
-    //     print('Message clicked from terminated state!');
-    //   }
-    // });
-
-    // _firebaseMessaging.getToken().then((String token) {
-    //   assert(token != null);
-    //   print("FCM Token: $token");
-    // });
   }
 
   void _onItemTapped(int index) {
@@ -311,7 +304,8 @@ class _MyHomePageState extends State<MyHomePage>  {
             // _local.show(1, "title", "body", details);
 
           // Get.to(() => QrScan());
-          Get.to(() => TestQR());
+
+            Get.find<NotionApiService>().getPages("e52395c7c0af494191af225c05db4010");
 
           },
         ),
@@ -548,16 +542,41 @@ class _TestQRState extends State<TestQR> {
       initDeepLinks();
     }
 
+    final GlobalKey _globalKey = GlobalKey();
+
+    Future<void> _capturePng() async {
+      final RenderRepaintBoundary boundary =
+      _globalKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+      final ui.Image image = await boundary.toImage(pixelRatio: 4);
+      final ByteData? byteData =
+      await image.toByteData(format: ui.ImageByteFormat.png);
+      final Uint8List pngBytes = byteData!.buffer.asUint8List();
+      final tempDir = await getTemporaryDirectory();
+      final imagePaths = '${tempDir.path}/image.png';
+      final file = await new File(imagePaths).create();
+      await file.writeAsBytes(pngBytes);
+      await Share.shareFiles(
+        [imagePaths],
+      );
+    }
 
     return Scaffold(
       body: Center(
-        child: QrImageView(
-          data: "http://localhost:8081/qrTest",
-          version: QrVersions.auto,
-          errorCorrectionLevel: QrErrorCorrectLevel.H,
-          embeddedImage: AssetImage("assets/testPng.png"),
-          embeddedImageStyle: QrEmbeddedImageStyle(
-            size: Size(100, 100),
+        child: GestureDetector(
+          onTap: (){
+            _capturePng();
+          },
+          child: RepaintBoundary(
+            key: _globalKey,
+            child: QrImageView(
+              data: "http://localhost:8081/qrTest",
+              version: QrVersions.auto,
+              errorCorrectionLevel: QrErrorCorrectLevel.H,
+              embeddedImage: AssetImage("assets/testPng.png"),
+              embeddedImageStyle: QrEmbeddedImageStyle(
+                size: Size(100, 100),
+              ),
+            ),
           ),
         ),
       ),
