@@ -20,6 +20,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:swf/controller.dart';
+import 'package:swf/dialog/global_dialog.dart';
 import 'package:swf/firebase_options.dart';
 import 'package:swf/home/bottomnav/bottomnav.dart';
 import 'package:swf/home/f_home/home.dart';
@@ -27,6 +28,7 @@ import 'package:swf/home/f_setting/setting.dart';
 import 'package:swf/notionApi/notion_api_service.dart';
 import 'package:swf/rive/artboardnestedinputs.dart';
 import 'package:swf/rive/event_star_rating.dart';
+import 'package:swf/service/user_service.dart';
 import 'package:swf/testlab.dart';
 
 import 'firebase/fire_storage/fire_storage.dart';
@@ -50,6 +52,7 @@ void main() async {
   );
 
   Get.put<NotionApiService>(NotionApiService());
+  Get.put<UserService>(UserService());
   // FlutterNativeSplash.preserve(widgetsBinding: bindings);
   Get.put(logger);
   Get.put(FireStorage());
@@ -246,34 +249,13 @@ class _MyHomePageState extends State<MyHomePage>  {
                 return TestLab();
               }
           );
-        })
-  ];
+        })];
 
-  Future<bool> _showExitConfirmationDialog() async {
-    return await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('앱 종료'),
-        content: Text('앱을 종료하시겠습니까?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text('아니요'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text('예'),
-          ),
-        ],
-      ),
-    ) ??
-        false;
-  }
 
   void _handlePopInvoked(bool didPop) async {
     if (!didPop) {
-      bool shouldExit = await _showExitConfirmationDialog();
-      if (shouldExit) {
+      bool? shouldExit = await showExitConfirmationDialog();
+      if (shouldExit != null && shouldExit) {
         Navigator.of(context).pop();
       }
     }
@@ -305,7 +287,8 @@ class _MyHomePageState extends State<MyHomePage>  {
 
           // Get.to(() => QrScan());
 
-            Get.find<NotionApiService>().getPages("e52395c7c0af494191af225c05db4010");
+            Get.find<NotionApiService>().postQueryDatabase("e52395c7c0af494191af225c05db4010");
+            // Get.find<NotionApiService>().getUserList();
 
           },
         ),

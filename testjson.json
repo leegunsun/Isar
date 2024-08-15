@@ -1,0 +1,34 @@
+{
+  "object": "list",
+  "results": [
+    {
+      "object": "user",
+      "id": "75b32d9b-2254-46ab-af70-b6480dc25341",
+      "name": "이건선",
+      "avatar_url": null,
+      "type": "person",
+      "person": {
+        "email": "m6sctyksgr@privaterelay.appleid.com"
+      }
+    },
+    {
+      "object": "user",
+      "id": "c1444717-6bbd-4e21-805c-f9fc994cb7f9",
+      "name": "gunsunApi",
+      "avatar_url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/948eb076-a41f-4ff9-879f-092977dd3850/db04571a-8168-4464-af61-f71666028073.jpeg",
+      "type": "bot",
+      "bot": {
+        "owner": {
+          "type": "workspace",
+          "workspace": true
+        },
+        "workspace_name": "건선의 Notion"
+      }
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false,
+  "type": "user",
+  "user": {},
+  "request_id": "8ae66d95-f558-456d-893d-c3278a06f2a3"
+}
