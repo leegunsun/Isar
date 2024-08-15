@@ -4,6 +4,7 @@
 // utility in the flutter_test package. For example, you can send tap and scroll
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
+import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -73,11 +74,20 @@ void main() {
     late MockDio mockDio;
     late MockConnectivity mockConnectivity;
     late ApiService apiService;
+    late StreamController<List<ConnectivityResult>> connectivityStreamController;
 
     setUp(() {
       mockDio = MockDio();
       mockConnectivity = MockConnectivity();
       apiService = ApiService(connectivity: mockConnectivity)..dio = mockDio;
+      connectivityStreamController = StreamController<List<ConnectivityResult>>.broadcast();
+      when(mockConnectivity.onConnectivityChanged)
+          .thenAnswer((_) => connectivityStreamController.stream);
+
+      // Listen to stream and log changes
+      connectivityStreamController.stream.listen((event) {
+        print('Connectivity Changed: $event');
+      });
     });
 
     test('Should retry up to maxRetries times on timeout', () async {
@@ -125,6 +135,34 @@ void main() {
       await apiService.fetchData('https://api.example.com/data');
 
       verifyNever(mockDio.get(any));
+    });
+
+
+    tearDown(() {
+      connectivityStreamController.close();
+    });
+
+    test('emits correct connectivity results when connectivity changes', () async {
+      final expectedResults = [
+        [ConnectivityResult.wifi],
+        [ConnectivityResult.mobile],
+        [ConnectivityResult.none],
+      ];
+
+      expectLater(
+        mockConnectivity.onConnectivityChanged,
+        emitsInOrder(expectedResults),
+      );
+
+      // Simulate connectivity changes
+      print('Simulating Wi-Fi connectivity...');
+      connectivityStreamController.add([ConnectivityResult.wifi]);
+
+      print('Simulating Mobile Data connectivity...');
+      connectivityStreamController.add([ConnectivityResult.mobile]);
+
+      print('Simulating No connectivity...');
+      connectivityStreamController.add([ConnectivityResult.none]);
     });
 
     test('Should return successfully when API call is successful', () async {
