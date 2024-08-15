@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:http_mock_adapter/http_mock_adapter.dart';
 
 part "user.dart";
 part "database.dart";
@@ -8,11 +9,14 @@ part "search.dart";
 part "block.dart";
 
 class NotionApiService extends GetxService {
-  _NotionApiUser _notionUser = _NotionApiUser();
-  _NotionApiDatabase _notionDatabase = _NotionApiDatabase();
-  _NotionApiPage _notionApiPage = _NotionApiPage();
-  _NotionApiSearch _notionApiSearch = _NotionApiSearch();
-  _NotionApiBlock _notionApiBlock = _NotionApiBlock();
+
+  // TODO : 서버 타임아웃, 서버 에러 처리
+
+  _NotionApiUser _notionUser = _NotionApiUser(); // 유저
+  _NotionApiDatabase _notionDatabase = _NotionApiDatabase(); // DB
+  _NotionApiPage _notionApiPage = _NotionApiPage(); // DB상 페이지
+  _NotionApiSearch _notionApiSearch = _NotionApiSearch(); // 찾기?
+  _NotionApiBlock _notionApiBlock = _NotionApiBlock(); // 페이지의 상세 블록
 
   late final dio.Dio api;
   final _duration = 10000;
@@ -36,6 +40,7 @@ class NotionApiService extends GetxService {
       ),
     );
   }
+
 
   Future<dio.Response?> getUser (String userId) async {
     String version = 'v1/';

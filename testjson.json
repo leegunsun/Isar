@@ -2,33 +2,424 @@
   "object": "list",
   "results": [
     {
-      "object": "user",
-      "id": "75b32d9b-2254-46ab-af70-b6480dc25341",
-      "name": "이건선",
-      "avatar_url": null,
-      "type": "person",
-      "person": {
-        "email": "m6sctyksgr@privaterelay.appleid.com"
-      }
+      "object": "page",
+      "id": "52f95f44-2588-4b71-a38d-2617296ac899",
+      "created_time": "2024-08-14T03:45:00.000Z",
+      "last_edited_time": "2024-08-15T06:49:00.000Z",
+      "created_by": {
+        "object": "user",
+        "id": "75b32d9b-2254-46ab-af70-b6480dc25341"
+      },
+      "last_edited_by": {
+        "object": "user",
+        "id": "75b32d9b-2254-46ab-af70-b6480dc25341"
+      },
+      "cover": null,
+      "icon": null,
+      "parent": {
+        "type": "database_id",
+        "database_id": "e52395c7-c0af-4941-91af-225c05db4010"
+      },
+      "archived": false,
+      "in_trash": false,
+      "properties": {
+        "분야": {
+          "id": "%40Hnk",
+          "type": "rich_text",
+          "rich_text": []
+        },
+        "저자": {
+          "id": "NT%7Dd",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "저자 테스트 4444",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "저자 테스트 4444",
+              "href": null
+            }
+          ]
+        },
+        "독서 시작일": {
+          "id": "PZ%5Cz",
+          "type": "date",
+          "date": {
+            "start": "2024-08-16",
+            "end": null,
+            "time_zone": null
+          }
+        },
+        "요약": {
+          "id": "STde",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "요약555555555555555555555555555555555555555555555555",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "요약555555555555555555555555555555555555555555555555",
+              "href": null
+            }
+          ]
+        },
+        "출판사": {
+          "id": "qON%5C",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "추류판샆",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "추류판샆",
+              "href": null
+            }
+          ]
+        },
+        "도서명": {
+          "id": "title",
+          "type": "title",
+          "title": [
+            {
+              "type": "text",
+              "text": {
+                "content": "테스트4444444",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "테스트4444444",
+              "href": null
+            }
+          ]
+        }
+      },
+      "url": "https://www.notion.so/4444444-52f95f4425884b71a38d2617296ac899",
+      "public_url": null
     },
     {
-      "object": "user",
-      "id": "c1444717-6bbd-4e21-805c-f9fc994cb7f9",
-      "name": "gunsunApi",
-      "avatar_url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/948eb076-a41f-4ff9-879f-092977dd3850/db04571a-8168-4464-af61-f71666028073.jpeg",
-      "type": "bot",
-      "bot": {
-        "owner": {
-          "type": "workspace",
-          "workspace": true
+      "object": "page",
+      "id": "694e427b-c4fb-4db1-a1bc-8967c1ff25ad",
+      "created_time": "2024-08-14T03:45:00.000Z",
+      "last_edited_time": "2024-08-14T04:01:00.000Z",
+      "created_by": {
+        "object": "user",
+        "id": "75b32d9b-2254-46ab-af70-b6480dc25341"
+      },
+      "last_edited_by": {
+        "object": "user",
+        "id": "75b32d9b-2254-46ab-af70-b6480dc25341"
+      },
+      "cover": null,
+      "icon": null,
+      "parent": {
+        "type": "database_id",
+        "database_id": "e52395c7-c0af-4941-91af-225c05db4010"
+      },
+      "archived": false,
+      "in_trash": false,
+      "properties": {
+        "분야": {
+          "id": "%40Hnk",
+          "type": "rich_text",
+          "rich_text": []
         },
-        "workspace_name": "건선의 Notion"
-      }
+        "저자": {
+          "id": "NT%7Dd",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "노션1",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "노션1",
+              "href": null
+            }
+          ]
+        },
+        "독서 시작일": {
+          "id": "PZ%5Cz",
+          "type": "date",
+          "date": {
+            "start": "2024-08-15",
+            "end": null,
+            "time_zone": null
+          }
+        },
+        "요약": {
+          "id": "STde",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버네버",
+              "href": null
+            }
+          ]
+        },
+        "출판사": {
+          "id": "qON%5C",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "네이",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "네이",
+              "href": null
+            }
+          ]
+        },
+        "도서명": {
+          "id": "title",
+          "type": "title",
+          "title": [
+            {
+              "type": "text",
+              "text": {
+                "content": "도서명테스트",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "도서명테스트",
+              "href": null
+            }
+          ]
+        }
+      },
+      "url": "https://www.notion.so/694e427bc4fb4db1a1bc8967c1ff25ad",
+      "public_url": null
+    },
+    {
+      "object": "page",
+      "id": "e14d659a-2b5a-4e9b-a3a0-e3b9ae6392f8",
+      "created_time": "2024-08-14T03:45:00.000Z",
+      "last_edited_time": "2024-08-14T03:51:00.000Z",
+      "created_by": {
+        "object": "user",
+        "id": "75b32d9b-2254-46ab-af70-b6480dc25341"
+      },
+      "last_edited_by": {
+        "object": "user",
+        "id": "75b32d9b-2254-46ab-af70-b6480dc25341"
+      },
+      "cover": null,
+      "icon": null,
+      "parent": {
+        "type": "database_id",
+        "database_id": "e52395c7-c0af-4941-91af-225c05db4010"
+      },
+      "archived": false,
+      "in_trash": false,
+      "properties": {
+        "분야": {
+          "id": "%40Hnk",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "자기계발",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "자기계발",
+              "href": null
+            }
+          ]
+        },
+        "저자": {
+          "id": "NT%7Dd",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "이건선",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "이건선",
+              "href": null
+            }
+          ]
+        },
+        "독서 시작일": {
+          "id": "PZ%5Cz",
+          "type": "date",
+          "date": {
+            "start": "2024-08-14",
+            "end": null,
+            "time_zone": null
+          }
+        },
+        "요약": {
+          "id": "STde",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약요약",
+              "href": null
+            }
+          ]
+        },
+        "출판사": {
+          "id": "qON%5C",
+          "type": "rich_text",
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "나무나무출판사",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "나무나무출판사",
+              "href": null
+            }
+          ]
+        },
+        "도서명": {
+          "id": "title",
+          "type": "title",
+          "title": [
+            {
+              "type": "text",
+              "text": {
+                "content": "테스트 독서",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              },
+              "plain_text": "테스트 독서",
+              "href": null
+            }
+          ]
+        }
+      },
+      "url": "https://www.notion.so/e14d659a2b5a4e9ba3a0e3b9ae6392f8",
+      "public_url": null
     }
   ],
   "next_cursor": null,
   "has_more": false,
-  "type": "user",
-  "user": {},
-  "request_id": "8ae66d95-f558-456d-893d-c3278a06f2a3"
+  "type": "page_or_database",
+  "page_or_database": {},
+  "developer_survey": "https://notionup.typeform.com/to/bllBsoI4?utm_source=postman",
+  "request_id": "61a65c47-a977-44ef-87d7-349be6aee8e8"
 }

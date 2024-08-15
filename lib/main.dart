@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:app_links/app_links.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,6 @@ void main() async {
   Get.put(TestController());
   runApp(const MyApp());
 }
-
 
 class FileOutput extends LogOutput {
   late File _logFile;
