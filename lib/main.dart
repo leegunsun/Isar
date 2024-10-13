@@ -674,7 +674,7 @@ class _QrScanState extends State<QrScan> {
 }
 
 
-// permissionRequest(
+// permissionRequest
 //     {required BuildContext context,
 //       required Permission permission,}) async {
 //   // print('---> permission status: ${permission.status}');
