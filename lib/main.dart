@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -45,7 +46,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // 커스텀 출력을 사용하는 Logger 초기화
   Logger logger = Logger(output: FileOutput());
-
+  fetchReferrerInfo();
   // Logger의 초기화가 완료될 때까지 대기
   await logger.init;
   await Firebase.initializeApp(
@@ -708,3 +709,32 @@ class _QrScanState extends State<QrScan> {
 //   }
 // }
 //
+
+class InstallReferrerService {
+  static const platform = MethodChannel('com.example/install_referrer');
+
+  Future<Map<String, dynamic>?> getInstallReferrer() async {
+    try {
+      final result = await platform.invokeMethod('getInstallReferrer');
+      print("Referrer Data: $result");
+      return Map<String, dynamic>.from(result);
+    } on PlatformException catch (e) {
+      print("Failed to get install referrer: '${e.message}'.");
+      return null;
+    }
+  }
+}
+
+void fetchReferrerInfo() async {
+  InstallReferrerService service = InstallReferrerService();
+  Map<String, dynamic>? referrerData = await service.getInstallReferrer();
+
+  if (referrerData != null) {
+    print('Install Referrer: ${referrerData['installReferrer']}');
+    print('Click Time: ${referrerData['referrerClickTime']}');
+    print('Install Time: ${referrerData['appInstallTime']}');
+    print('Instant Experience: ${referrerData['instantExperience']}');
+  } else {
+    print('Failed to retrieve install referrer data');
+  }
+}
