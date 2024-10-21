@@ -1,12 +1,7 @@
 package com.example.swf
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
 import android.util.Log
-import androidx.annotation.NonNull
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse
 import com.android.installreferrer.api.InstallReferrerStateListener
@@ -31,6 +26,20 @@ class MainActivity: FlutterActivity() {
             }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent) // 인텐트를 업데이트하여 나중에 getIntent()로 가져올 수 있도록 합니다.
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val data = intent.data
+        if (data != null) {
+            val param = data.getQueryParameter("data")
+            Log.d("MainActivity", "Received data: $param")
+            // 전달된 데이터를 사용하여 로직 처리
+        }
+    }
 
     private fun fetchInstallReferrer(result: MethodChannel.Result) {
         referrerClient = InstallReferrerClient.newBuilder(this).build()
